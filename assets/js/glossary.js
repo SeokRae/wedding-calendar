@@ -24,6 +24,7 @@
       if (t.term) {
         term.className = 'glossary-term' + (t.uncertainTerm ? ' uncertain' : '');
         term.textContent = t.term + (t.uncertainTerm ? ' ?' : '');
+        if (t.uncertainTerm) term.title = '원본 자료로 확인되지 않아 정의를 보고 일반적인 의미로 채운 용어입니다';
       } else {
         term.className = 'glossary-term unknown';
         term.textContent = '(확인 필요)';
