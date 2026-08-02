@@ -1,7 +1,14 @@
 (function () {
   const DATA = { bride: CALENDAR_BRIDE, groom: CALENDAR_GROOM };
   const grid = document.getElementById('grid');
-  const tabs = Array.from(document.querySelectorAll('.gender-tabs button'));
+  const genderTabs = Array.from(document.querySelectorAll('.gender-tabs button'));
+  const categoryTabsEl = document.getElementById('category-tabs');
+  const categoryTabs = Array.from(categoryTabsEl.querySelectorAll('button'));
+
+  const state = {
+    gender: localStorage.getItem('calendar-gender') || 'bride',
+    category: localStorage.getItem('calendar-category') || 'all'
+  };
 
   function checkboxItem(id, text) {
     const label = document.createElement('label');
@@ -42,14 +49,18 @@
     return note;
   }
 
-  function renderBrideMonth(month, mi) {
+  function renderBrideMonth(month, mi, categoryFilter) {
+    const entries = Object.entries(month.sections)
+      .filter(([secName]) => categoryFilter === 'all' || secName === categoryFilter);
+    if (!entries.length) return null;
+
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `<span class="dday">${month.dday}</span><span class="alt">or ${month.alt}</span>`;
 
     if (month.partial) card.appendChild(partialNote('var(--accent-bride)'));
 
-    Object.entries(month.sections).forEach(([secName, items]) => {
+    entries.forEach(([secName, items]) => {
       const section = document.createElement('div');
       section.className = 'section';
 
@@ -152,18 +163,36 @@
     return card;
   }
 
-  function render(gender) {
+  function render() {
     grid.innerHTML = '';
-    const renderMonth = gender === 'bride' ? renderBrideMonth : renderGroomMonth;
-    DATA[gender].months.forEach((month, mi) => grid.appendChild(renderMonth(month, mi)));
+
+    if (state.gender === 'bride') {
+      categoryTabsEl.style.display = 'flex';
+      DATA.bride.months.forEach((month, mi) => {
+        const card = renderBrideMonth(month, mi, state.category);
+        if (card) grid.appendChild(card);
+      });
+    } else {
+      categoryTabsEl.style.display = 'none';
+      DATA.groom.months.forEach((month, mi) => grid.appendChild(renderGroomMonth(month, mi)));
+    }
   }
 
-  function setGender(g) {
-    localStorage.setItem('calendar-gender', g);
-    tabs.forEach(b => b.classList.toggle('active', b.dataset.gender === g));
-    render(g);
-  }
+  genderTabs.forEach(b => b.addEventListener('click', () => {
+    state.gender = b.dataset.gender;
+    localStorage.setItem('calendar-gender', state.gender);
+    genderTabs.forEach(x => x.classList.toggle('active', x === b));
+    render();
+  }));
 
-  tabs.forEach(b => b.addEventListener('click', () => setGender(b.dataset.gender)));
-  setGender(localStorage.getItem('calendar-gender') || 'bride');
+  categoryTabs.forEach(b => b.addEventListener('click', () => {
+    state.category = b.dataset.category;
+    localStorage.setItem('calendar-category', state.category);
+    categoryTabs.forEach(x => x.classList.toggle('active', x === b));
+    render();
+  }));
+
+  genderTabs.forEach(b => b.classList.toggle('active', b.dataset.gender === state.gender));
+  categoryTabs.forEach(b => b.classList.toggle('active', b.dataset.category === state.category));
+  render();
 })();
