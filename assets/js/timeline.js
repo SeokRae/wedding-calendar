@@ -11,7 +11,35 @@
     return typeof item === 'object' ? item.text : item;
   }
 
-  function checkboxRow(id, text, dotColor) {
+  // 캘린더 전체요약의 항목(상위 개념)이 스드메/신혼집 칼럼의 하위 항목 여러 개를
+  // 아우르는 경우를 추적하는 목록. 하위 항목이 몇 개인지, 그중 몇 개가 체크됐는지를
+  // 비교해 상위 체크박스를 전체 체크/부분 체크/미체크 상태로 맞춘다
+  const groups = [];
+
+  function isChecked(id) {
+    return localStorage.getItem(id) === '1';
+  }
+
+  function setChecked(id, checked) {
+    if (checked) localStorage.setItem(id, '1');
+    else localStorage.removeItem(id);
+    document.querySelectorAll(`input[data-sync-id="${id}"]`).forEach(el => {
+      el.checked = checked;
+    });
+  }
+
+  function refreshGroup(group) {
+    const total = group.childIds.length;
+    const checkedCount = group.childIds.filter(isChecked).length;
+    group.cb.checked = checkedCount === total;
+    group.cb.indeterminate = checkedCount > 0 && checkedCount < total;
+  }
+
+  function refreshAllGroups() {
+    groups.forEach(refreshGroup);
+  }
+
+  function checkboxRow(id, text, dotColor, childIds) {
     const li = document.createElement('li');
     const label = document.createElement('label');
     label.className = 'tl-check';
@@ -19,16 +47,22 @@
     const cb = document.createElement('input');
     cb.type = 'checkbox';
     cb.dataset.syncId = id;
-    cb.checked = localStorage.getItem(id) === '1';
-    cb.addEventListener('change', () => {
-      if (cb.checked) localStorage.setItem(id, '1');
-      else localStorage.removeItem(id);
-      // 캘린더 전체요약 항목과 스드메/신혼집 칼럼이 같은 id를 공유하는 경우,
-      // 새로고침 없이 같은 화면에서 바로 서로 체크 상태를 맞춘다
-      document.querySelectorAll(`input[data-sync-id="${id}"]`).forEach(other => {
-        if (other !== cb) other.checked = cb.checked;
+
+    if (childIds && childIds.length) {
+      const group = { cb, childIds };
+      groups.push(group);
+      refreshGroup(group);
+      cb.addEventListener('change', () => {
+        childIds.forEach(cid => setChecked(cid, cb.checked));
+        refreshAllGroups();
       });
-    });
+    } else {
+      cb.checked = isChecked(id);
+      cb.addEventListener('change', () => {
+        setChecked(id, cb.checked);
+        refreshAllGroups();
+      });
+    }
     label.appendChild(cb);
 
     if (dotColor) {
@@ -70,12 +104,13 @@
     const ul = document.createElement('ul');
     ul.className = 'tl-items';
     month.items.forEach((it, ii) => {
-      // items with a known brideIndex reuse the calendar tool's bride-view id,
-      // so checking them here also checks the matching 스드메/신혼집 column entry
-      const id = (it.cat === '스드메' || it.cat === '신혼집') && it.brideIndex != null
-        ? `bride-m${mi}-${it.cat}-${it.brideIndex}`.replace(/\s/g, '')
-        : `timeline-summary-m${mi}-i${ii}`;
-      ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)'));
+      const id = `timeline-summary-m${mi}-i${ii}`;
+      // items with known brideIndexes act as a parent over the matching
+      // 스드메/신혼집 column entries, so its check state is derived from them
+      const childIds = (it.cat === '스드메' || it.cat === '신혼집') && it.brideIndexes
+        ? it.brideIndexes.map(idx => `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, ''))
+        : null;
+      ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)', childIds));
     });
     row.appendChild(ul);
     summaryCol.appendChild(row);
