@@ -15,8 +15,8 @@ wedding-calendar/
 │   ├── budget.html          예산 가이드 도구 (항목별 비용 범위 + 총액대)
 │   └── glossary.html        용어 가이드 도구 (결혼 준비 용어 사전)
 ├── data/
-│   ├── calendar-bride.js    신부용 캘린더 콘텐츠 (섹션별 체크리스트)
-│   ├── calendar-groom.js    신랑용 캘린더 콘텐츠 (항목 나열형 + tip/입력 필드)
+│   ├── calendar-bride.js    신부용 캘린더 콘텐츠 (섹션별 체크리스트, 신랑 항목과 겹치는 일부는 link 필드로 표시)
+│   ├── calendar-groom.js    신랑용 캘린더 콘텐츠 (항목 나열형 + tip/입력 필드, 신부 항목과 겹치는 일부는 link 필드로 표시)
 │   ├── timeline-summary.js  타임라인 "캘린더 전체요약" 칼럼 콘텐츠
 │   ├── budget.js            예산 가이드 콘텐츠 (요약표 + 항목별 상세)
 │   └── glossary.js          용어 가이드 콘텐츠 (섹션별 용어·정의)
@@ -29,6 +29,7 @@ wedding-calendar/
 │   │   ├── budget.css       예산 가이드 전용 스타일 (요약표, 항목 카드)
 │   │   └── glossary.css     용어 가이드 전용 스타일 (2단 컬럼 flow)
 │   └── js/
+│       ├── shared-id.js     신부/신랑 항목 중 같은 할 일을 가리키는 항목의 체크 id를 공유시키는 헬퍼 (resolveCheckId)
 │       ├── calendar.js      캘린더 렌더링 로직 (체크박스/입력값 localStorage 저장)
 │       ├── timeline.js      타임라인 렌더링 로직 (calendar-bride.js/calendar-groom.js 데이터를 원본 id 그대로 재사용해 캘린더 도구와 체크 연동)
 │       ├── budget.js        예산 가이드 렌더링 로직
@@ -54,3 +55,4 @@ wedding-calendar/
 - 체크 상태·입력 필드 값은 `localStorage`에 저장되므로 브라우저/기기 간 동기화되지 않는다.
 - `timeline-summary.js`에는 부모님 카테고리 항목이 없어, 타임라인의 부모님 탭에서는 전체요약 칼럼이 비어 있다 (부모님 전체 칼럼 자체는 정상 표시).
 - 타임라인은 캘린더 도구의 신랑용 `fields`(일정·장소 텍스트 입력)를 다루지 않는다. 해당 입력은 캘린더 도구에서 진행한다.
+- `calendar-bride.js`/`calendar-groom.js`의 항목에 `link` 필드가 있으면, 그 값이 같은 신부/신랑 항목끼리 체크 상태를 공유한다 (`assets/js/shared-id.js`의 `resolveCheckId`). 표현만 다르고 실질적으로 같은 할 일인 경우에만 붙이며, 범위가 다르거나 애매한 항목은 의도적으로 링크하지 않는다. `link` 값은 신부·신랑 데이터에 각각 정확히 1개씩만 나타나야 한다. 이 필드가 새로 붙거나 바뀐 항목은 저장 키가 바뀌므로 기존에 체크해둔 상태가 초기화된 것처럼 보일 수 있다.
