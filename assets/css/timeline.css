@@ -52,24 +52,50 @@
 }
 
 ul.tl-items { list-style: none; margin: 0; padding: 0; }
+ul.tl-items li { margin-bottom: 6px; }
 
-ul.tl-items li {
+label.tl-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
   font-size: 12.5px;
   line-height: 1.5;
-  margin-bottom: 4px;
-  padding-left: 14px;
-  position: relative;
+  cursor: pointer;
 }
 
-ul.tl-items li .tl-dot {
-  position: absolute;
-  left: 0;
-  top: 6px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+label.tl-check input[type="checkbox"] {
+  margin-top: 3px;
+  flex: none;
+  width: 13px;
+  height: 13px;
+  accent-color: var(--ink);
 }
+
+label.tl-check input:checked + .tl-dot + span,
+label.tl-check input:checked + span {
+  text-decoration: line-through;
+  color: var(--sub-ink);
+}
+
+.tl-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-top: 6px;
+}
+
+ul.sub {
+  list-style: none;
+  margin: 4px 0 0 20px;
+  padding: 0;
+  border-left: 1px dashed var(--border);
+  padding-left: 10px;
+}
+
+ul.sub li { font-size: 11px; color: var(--sub-ink); margin-bottom: 3px; }
 
 @media print {
   .tl-columns { grid-template-columns: repeat(3, 1fr); }
+  label.tl-check input[type="checkbox"] { accent-color: var(--ink); }
 }
