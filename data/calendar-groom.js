@@ -1,54 +1,54 @@
 const CALENDAR_GROOM = {
   months: [
     { dday: "D-12개월", alt: "6개월", blocks: [
-      {type:"item", cat:"예식 준비", text:"양가 상견례 날짜 잡기"},
+      {type:"item", cat:"예식 준비", text:"양가 상견례 날짜 잡기", link:"m0-engagement-meeting-date"},
       {type:"item", cat:"예식 준비", text:"부모님 지원 범위 확인하기"},
       {type:"item", cat:"신혼집", text:"내가 모아놓은 결혼 자금 확인하기"},
-      {type:"item", cat:"부모님", text:"결혼 준비 일정 가족과 공유하기"},
+      {type:"item", cat:"부모님", text:"결혼 준비 일정 가족과 공유하기", link:"m0-share-schedule"},
       {type:"item", cat:"예식 준비", text:"예물 진행 여부 부모님과 상의하기"},
       {type:"fields", cat:"예식 준비", labels:["상견례일정","장소"]}
     ]},
     { dday: "D-11개월", alt: "6개월", blocks: [
-      {type:"item", cat:"예식 준비", text:"상견례 장소·메뉴 확인하기"},
+      {type:"item", cat:"예식 준비", text:"상견례 장소·메뉴 확인하기", link:"m1-meeting-place-menu"},
       {type:"item", cat:"예식 준비", text:"상견례 복장 미리 상의하기"},
-      {type:"item", cat:"예식 준비", text:"결혼식 날짜 신부와 정하기"},
-      {type:"item", cat:"예식 준비", text:"하객 인원 대략 세어보기"},
+      {type:"item", cat:"예식 준비", text:"결혼식 날짜 신부와 정하기", link:"m1-wedding-date-confirm"},
+      {type:"item", cat:"예식 준비", text:"하객 인원 대략 세어보기", link:"m1-guest-count"},
       {type:"tip", cat:"예식 준비", title:"상견례", items:["꽃·간단한 선물 준비하기","상견례 장소 미리 가보기","당일 먼저 도착해 자리 확인하기"]},
       {type:"fields", cat:"예식 준비", labels:["결혼식일정","장소"]}
     ]},
     { dday: "D-10개월", alt: "5개월", blocks: [
-      {type:"item", cat:"예식 준비", text:"결혼 예산 최종 정리하기"},
-      {type:"item", cat:"예식 준비", text:"웨딩홀 계약 조건 확인하기 (보증 인원·추가 비용 유무 체크)"},
+      {type:"item", cat:"예식 준비", text:"결혼 예산 최종 정리하기", link:"m2-budget-finalize"},
+      {type:"item", cat:"예식 준비", text:"웨딩홀 계약 조건 확인하기 (보증 인원·추가 비용 유무 체크)", link:"m2-hall-contract-terms"},
       {type:"item", cat:"신혼집", text:"신혼집 주거 형태 결정하기 (전세·매매)"},
-      {type:"item", cat:"신혼집", text:"주거 형태에 맞춰 자금 확인하기 (현금·대출 가능 총 금액)"},
+      {type:"item", cat:"신혼집", text:"주거 형태에 맞춰 자금 확인하기 (현금·대출 가능 총 금액)", link:"m2-housing-budget"},
       {type:"item", cat:"신혼집", text:"신혼집 매물 찾아보기 (부동산 방문 및 상담)"}
     ]},
     { dday: "D-9개월", alt: "5개월", blocks: [
       {type:"item", cat:"예식 준비", text:"결혼 전 신랑·신부 건강검진하기 (생활습관·건강 상태 미리 확인하기)"},
       {type:"item", cat:"스드메", text:"웨딩 촬영 날짜·시간 물어보기 (헤어·메이크업 후 스튜디오 이동 시간 확인)"},
-      {type:"item", cat:"스드메", text:"신랑 예복 준비 시작하기 (촬영용 대여·본식맞춤 여부 정하기)"},
+      {type:"item", cat:"스드메", text:"신랑 예복 준비 시작하기 (촬영용 대여·본식맞춤 여부 정하기)", link:"m3-groom-attire-start"},
       {type:"item", cat:"신혼집", text:"신혼집 후보 지역 정리하기 (출퇴근·생활권 함께 고려하기)"},
       {type:"item", cat:"신혼여행", text:"신혼여행 방향 정해보기 (자유여행·패키지 고민하기)"},
-      {type:"item", cat:"신혼여행", text:"신혼여행 항공권·숙소 예약하기 (비자·여권 유효기간 확인)"},
-      {type:"item", cat:"예식 준비", text:"혼인신고 언제 할지 정하기 (세금·대출 영향 확인)"}
+      {type:"item", cat:"신혼여행", text:"신혼여행 항공권·숙소 예약하기 (비자·여권 유효기간 확인)", link:"m3-honeymoon-flight-hotel"},
+      {type:"item", cat:"예식 준비", text:"혼인신고 언제 할지 정하기 (세금·대출 영향 확인)", link:"m3-marriage-registration"}
     ]},
     { dday: "D-8개월", alt: "4개월", blocks: [
-      {type:"item", cat:"스드메", text:"피부관리·다이어트 시작하기 (수염·보톡스·마스크팩·선크림 등)"},
-      {type:"item", cat:"예식 준비", text:"웨딩촬영 전 웨딩밴드 준비하기 (결혼을 위해 맞추고 항상 끼는 반지)"},
-      {type:"item", cat:"스드메", text:"신랑 신부 맞춤·대여 한복 상담"},
-      {type:"item", cat:"신혼집", text:"신혼집 계약 조건 최종 확인하기 (부동산 중개 수수료·누수·하자 등)"},
-      {type:"item", cat:"신혼집", text:"신혼집 계약 전 등기부등본 확인하기"},
+      {type:"item", cat:"스드메", text:"피부관리·다이어트 시작하기 (수염·보톡스·마스크팩·선크림 등)", link:"m4-skincare-diet"},
+      {type:"item", cat:"예식 준비", text:"웨딩촬영 전 웨딩밴드 준비하기 (결혼을 위해 맞추고 항상 끼는 반지)", link:"m4-wedding-band"},
+      {type:"item", cat:"스드메", text:"신랑 신부 맞춤·대여 한복 상담", link:"m4-hanbok-consult"},
+      {type:"item", cat:"신혼집", text:"신혼집 계약 조건 최종 확인하기 (부동산 중개 수수료·누수·하자 등)", link:"m4-house-contract-check"},
+      {type:"item", cat:"신혼집", text:"신혼집 계약 전 등기부등본 확인하기", link:"m4-house-registry-check"},
       {type:"tip", cat:"신혼집", title:"등기부등본 확인", items:["집주인·계약자 이름 같은지 확인","대출 금액이 보증금보다 많으면 위험","압류·경매 등 문제 있는 집인지 확인"]}
     ]},
     { dday: "D-7개월", alt: "4개월", blocks: [
-      {type:"item", cat:"신혼집", text:"신혼집 계약 완료하기 (명의·입주 날짜·잔금 날짜 확인)"},
-      {type:"item", cat:"신혼집", text:"전입신고 및 확정일자 준비하기", sub:["확정일자: 보증금 보호 목적 (계약 후 즉시)","전입신고: 실제 거주 주소 변경 (이사 후 14일 이내)"]},
-      {type:"item", cat:"예식 준비", text:"폐백 진행 여부 부모님께 여쭤보기"}
+      {type:"item", cat:"신혼집", text:"신혼집 계약 완료하기 (명의·입주 날짜·잔금 날짜 확인)", link:"m5-house-contract-complete"},
+      {type:"item", cat:"신혼집", text:"전입신고 및 확정일자 준비하기", sub:["확정일자: 보증금 보호 목적 (계약 후 즉시)","전입신고: 실제 거주 주소 변경 (이사 후 14일 이내)"], link:"m5-house-move-in-registration"},
+      {type:"item", cat:"예식 준비", text:"폐백 진행 여부 부모님께 여쭤보기", link:"m5-pyebaek-check"}
     ]},
     { dday: "D-6개월", alt: "3개월", blocks: [
       {type:"item", cat:"스드메", text:"웨딩 촬영 날짜 확인하기 (촬영 전 미용실 염색·커트)"},
       {type:"item", cat:"스드메", text:"촬영 드레스 가봉 날짜 확인"},
-      {type:"item", cat:"스드메", text:"촬영 대여제품 반납 주소 확인"},
+      {type:"item", cat:"스드메", text:"촬영 대여제품 반납 주소 확인", link:"m6-outfit-return"},
       {type:"item", cat:"예식 준비", text:"결혼식 사회자·축가 정하기 (전문 사회자·친한 친구 중 정하기)"},
       {type:"item", cat:"예식 준비", text:"결혼식 주례·비주례 정하기"},
       {type:"item", cat:"신혼집", text:"신혼집 가전·가구 예산 정하기 (신부가 원하는 분위기로 함께 찾아보기)"},
@@ -57,38 +57,38 @@ const CALENDAR_GROOM = {
     { dday: "D-5개월", alt: "3개월", blocks: [
       {type:"item", cat:"신혼집", text:"인터넷·가전·가구 설치 날짜 정하기 (설치 날짜 최대한 같은 날로 맞춰보기)"},
       {type:"item", cat:"신혼여행", text:"신혼여행 준비하기 (여행지·비자·예약 유효기간 확인)"},
-      {type:"item", cat:"신혼집", text:"신혼집 입주 전 하자 체크하기"},
-      {type:"item", cat:"예식 준비", text:"청첩장 제작 완료 (종이·모바일)"},
+      {type:"item", cat:"신혼집", text:"신혼집 입주 전 하자 체크하기", link:"m7-house-defect-check"},
+      {type:"item", cat:"예식 준비", text:"청첩장 제작 완료 (종이·모바일)", link:"m7-invitation-print"},
       {type:"tip", cat:"신혼집", title:"신혼집 하자 체크", items:["누수·곰팡이 흔적 확인하기","수압·배수 잘 되는지 확인하기","벽지·바닥 특현 곳 확인하기","옵션 가전 정상 작동하는지 보기","전세는 사진 꼭 찍어두기"]}
     ]},
     { dday: "D-4개월", alt: "2개월", blocks: [
-      {type:"item", cat:"예식 준비", text:"결혼식 식순 함께 정하기"},
-      {type:"item", cat:"신혼집", text:"신혼집 입주 청소 예약하기 (셀프 청소·업체 맡길지 정하기)"},
-      {type:"item", cat:"신혼집", text:"신혼집 인테리어 진행여부 확인하기 (도배·장판·조명 등 필요한 부분 체크)"},
+      {type:"item", cat:"예식 준비", text:"결혼식 식순 함께 정하기", link:"m8-ceremony-order"},
+      {type:"item", cat:"신혼집", text:"신혼집 입주 청소 예약하기 (셀프 청소·업체 맡길지 정하기)", link:"m8-house-cleaning-book"},
+      {type:"item", cat:"신혼집", text:"신혼집 인테리어 진행여부 확인하기 (도배·장판·조명 등 필요한 부분 체크)", link:"m8-house-interior-check"},
       {type:"tip", cat:"신혼집", title:"입주 청소 업체", items:["입주 청소 예약 빨리 마감될 수 있음","전세입자 이사 날짜 미리 조율하기"]},
       {type:"tip", cat:"신혼여행", title:"신혼여행", items:["여권과 항공권 이름 같은지 확인하기","입국 서류·비자 필요 여부 확인하기","환전·유심·로밍 미리 준비하기","신혼여행 맛집·갈 장소 찾아보기"]}
     ]},
     { dday: "D-3개월", alt: "2개월", blocks: [
-      {type:"item", cat:"예식 준비", text:"청첩장 돌리기 시작하기 (가까운 지인·어른들 먼저 전달드리기)"},
-      {type:"item", cat:"신혼집", text:"신혼집 입주 준비 시작하기 (기존 짐 정리·비품 등 미리 정리하기)"},
-      {type:"item", cat:"신혼집", text:"가전·가구 설치 일정 조율하기 (신랑·신부·부모님 서로 일정 조율)"},
+      {type:"item", cat:"예식 준비", text:"청첩장 돌리기 시작하기 (가까운 지인·어른들 먼저 전달드리기)", link:"m9-invitation-distribute"},
+      {type:"item", cat:"신혼집", text:"신혼집 입주 준비 시작하기 (기존 짐 정리·비품 등 미리 정리하기)", link:"m9-house-movein-prep"},
+      {type:"item", cat:"신혼집", text:"가전·가구 설치 일정 조율하기 (신랑·신부·부모님 서로 일정 조율)", link:"m9-appliance-install-schedule"},
       {type:"tip", cat:"신혼집", title:"가전·가구 설치 일정", items:["신랑·신부 일정 확인하기","부모님 일정 괜찮으신지 여쭤보기","배송 설치 시간 한 번 더 체크하기"]}
     ]},
     { dday: "D-2개월", alt: "1개월", blocks: [
       {type:"item", cat:"예식 준비", text:"결혼식 주례·사회·축가 확정하기"},
-      {type:"item", cat:"예식 준비", text:"식전 영상 사진 함께 고르기"},
-      {type:"item", cat:"예식 준비", text:"결혼식 식순·BGM 최종 확인하기 (입장곡·축가·축사·행진곡)"},
-      {type:"item", cat:"예식 준비", text:"최종 하객 명단 확정하기 (친구들 참석 여부 다시 물어보기)"},
-      {type:"item", cat:"부모님", text:"혼주 한복·헤어·메이크업 예약하기 (양가 어머님 장소·구두 미리 확인해두기)"},
-      {type:"item", cat:"스드메", text:"신랑 예복 가봉 진행하기 (구두 신고 바지 기장·품맞음 꼭 확인하기)"},
+      {type:"item", cat:"예식 준비", text:"식전 영상 사진 함께 고르기", link:"m10-pre-wedding-video"},
+      {type:"item", cat:"예식 준비", text:"결혼식 식순·BGM 최종 확인하기 (입장곡·축가·축사·행진곡)", link:"m10-ceremony-bgm-check"},
+      {type:"item", cat:"예식 준비", text:"최종 하객 명단 확정하기 (친구들 참석 여부 다시 물어보기)", link:"m10-guest-list-final"},
+      {type:"item", cat:"부모님", text:"혼주 한복·헤어·메이크업 예약하기 (양가 어머님 장소·구두 미리 확인해두기)", link:"m10-parents-hanbok-booking"},
+      {type:"item", cat:"스드메", text:"신랑 예복 가봉 진행하기 (구두 신고 바지 기장·품맞음 꼭 확인하기)", link:"m10-groom-attire-fitting"},
       {type:"item", cat:"스드메", text:"신부 부케 디자인 함께 정하기 (총 6개)", sub:["신부용 부케 1개 + 신랑용 부토니에 1개","혼주용 코사지 4개"]}
     ]},
     { dday: "D-1개월", alt: "1개월", blocks: [
-      {type:"item", cat:"예식 준비", text:"결혼식 최종 리허설 및 점검하기 (식순·동선·입장 순서 마지막 확인)"},
-      {type:"item", cat:"예식 준비", text:"혼인서약서 최종 준비하기"},
-      {type:"item", cat:"스드메", text:"신랑 예복 마지막으로 입어보기"},
-      {type:"item", cat:"스드메", text:"신부 본식드레스 가봉 함께 가기"},
-      {type:"item", cat:"신혼집", text:"신혼집 주소 이전 및 변경 준비하기 (전세·보험·은행 등 주소 변경 확인)"}
+      {type:"item", cat:"예식 준비", text:"결혼식 최종 리허설 및 점검하기 (식순·동선·입장 순서 마지막 확인)", link:"m11-rehearsal-check"},
+      {type:"item", cat:"예식 준비", text:"혼인서약서 최종 준비하기", link:"m11-vows-final"},
+      {type:"item", cat:"스드메", text:"신랑 예복 마지막으로 입어보기", link:"m11-groom-attire-final"},
+      {type:"item", cat:"스드메", text:"신부 본식드레스 가봉 함께 가기", link:"m11-bride-dress-fitting"},
+      {type:"item", cat:"신혼집", text:"신혼집 주소 이전 및 변경 준비하기 (전세·보험·은행 등 주소 변경 확인)", link:"m11-house-address-move"}
     ]}
   ]
 };

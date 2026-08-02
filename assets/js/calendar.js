@@ -76,7 +76,7 @@
       items.forEach((item, ii) => {
         const isObj = typeof item === 'object';
         const text = isObj ? item.text : item;
-        const id = `bride-m${mi}-${secName}-${ii}`.replace(/\s/g, '');
+        const id = resolveCheckId(`bride-m${mi}-${secName}-${ii}`.replace(/\s/g, ''), item);
 
         const li = document.createElement('li');
         li.appendChild(checkboxItem(id, text));
@@ -113,7 +113,7 @@
       const li = document.createElement('li');
 
       if (block.type === 'item') {
-        const id = `groom-m${mi}-item${bi}`;
+        const id = resolveCheckId(`groom-m${mi}-item${bi}`, block);
         li.appendChild(checkboxItem(id, block.text));
         if (block.sub) li.appendChild(subList(block.sub));
       } else if (block.type === 'tip') {
