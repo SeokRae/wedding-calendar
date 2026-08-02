@@ -6,12 +6,20 @@
     "신혼여행": "var(--cat-honeymoon)",
     "부모님": "var(--cat-parents)"
   };
+  const BRIDE_CATS = ["예식 준비", "스드메", "신혼집", "신혼여행", "부모님"];
+  const CAT_KEY = {
+    "예식 준비": "ceremony",
+    "스드메": "sdm",
+    "신혼집": "home",
+    "신혼여행": "honeymoon",
+    "부모님": "parents"
+  };
 
   function itemText(item) {
     return typeof item === 'object' ? item.text : item;
   }
 
-  // 캘린더 전체요약의 항목(상위 개념)이 스드메/신혼집 칼럼의 하위 항목 여러 개를
+  // 캘린더 전체요약의 항목(상위 개념)이 카테고리 컬럼의 하위 항목 여러 개를
   // 아우르는 경우를 추적하는 목록. 하위 항목이 몇 개인지, 그중 몇 개가 체크됐는지를
   // 비교해 상위 체크박스를 전체 체크/부분 체크/미체크 상태로 맞춘다
   const groups = [];
@@ -80,6 +88,13 @@
     return li;
   }
 
+  function emptyNote() {
+    const div = document.createElement('div');
+    div.className = 'tl-empty';
+    div.textContent = '— 해당 없음';
+    return div;
+  }
+
   function subList(subs) {
     const ul = document.createElement('ul');
     ul.className = 'sub';
@@ -91,44 +106,90 @@
     return ul;
   }
 
-  const summaryCol = document.getElementById('col-summary');
-  TIMELINE_SUMMARY.forEach((month, mi) => {
+  function monthRow(dday, tag) {
     const row = document.createElement('div');
     row.className = 'tl-row';
 
-    const dday = document.createElement('div');
-    dday.className = 'tl-dday';
-    dday.innerHTML = `${month.dday} <span class="tl-tag">[${month.tag}]</span>`;
-    row.appendChild(dday);
+    const ddayEl = document.createElement('div');
+    ddayEl.className = 'tl-dday';
+    if (tag) ddayEl.innerHTML = `${dday} <span class="tl-tag">[${tag}]</span>`;
+    else ddayEl.textContent = dday;
+    row.appendChild(ddayEl);
 
-    const ul = document.createElement('ul');
-    ul.className = 'tl-items';
-    month.items.forEach((it, ii) => {
-      const id = `timeline-summary-m${mi}-i${ii}`;
-      // items with known brideIndexes act as a parent over the matching
-      // 스드메/신혼집 column entries, so its check state is derived from them
-      const childIds = (it.cat === '스드메' || it.cat === '신혼집') && it.brideIndexes
-        ? it.brideIndexes.map(idx => `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, ''))
-        : null;
-      ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)', childIds));
+    return row;
+  }
+
+  function summaryHasCat(cat) {
+    return TIMELINE_SUMMARY.some(month => month.items.some(it => it.cat === cat));
+  }
+
+  function legend() {
+    const wrap = document.createElement('div');
+    wrap.className = 'tl-legend';
+    // 전체요약에 실제로 등장하는 카테고리만 표시한다 — 항목이 하나도 없는
+    // 카테고리(예: 부모님)까지 넣으면 범례에 죽은 항목이 생긴다
+    BRIDE_CATS.filter(summaryHasCat).forEach(cat => {
+      const item = document.createElement('span');
+      item.className = 'tl-legend-item';
+
+      const dot = document.createElement('span');
+      dot.className = 'tl-legend-dot';
+      dot.style.background = CAT_VAR[cat];
+      item.appendChild(dot);
+      item.appendChild(document.createTextNode(cat));
+
+      wrap.appendChild(item);
     });
-    row.appendChild(ul);
-    summaryCol.appendChild(row);
-  });
+    return wrap;
+  }
 
-  const sdmCol = document.getElementById('col-sdm');
-  const homeCol = document.getElementById('col-home');
+  function columnShell(headerText, headerClass) {
+    const wrap = document.createElement('div');
 
-  CALENDAR_BRIDE.months.forEach((month, mi) => {
-    [[sdmCol, '스드메'], [homeCol, '신혼집']].forEach(([col, cat]) => {
-      const row = document.createElement('div');
-      row.className = 'tl-row';
+    const header = document.createElement('span');
+    header.className = `tl-col-header ${headerClass}`;
+    header.textContent = headerText;
+    wrap.appendChild(header);
 
-      const dday = document.createElement('div');
-      dday.className = 'tl-dday';
-      dday.textContent = month.dday;
-      row.appendChild(dday);
+    const col = document.createElement('div');
+    col.className = 'tl-column';
+    wrap.appendChild(col);
 
+    return { wrap, col, header };
+  }
+
+  function renderSummaryColumn(col, catFilter) {
+    TIMELINE_SUMMARY.forEach((month, mi) => {
+      // 원본 위치(ii)를 먼저 붙인 뒤 걸러야 카테고리로 필터링해도 항목의
+      // localStorage id(timeline-summary-m{mi}-i{ii})가 흔들리지 않는다
+      const items = month.items
+        .map((it, ii) => ({ it, ii }))
+        .filter(({ it }) => !catFilter || it.cat === catFilter);
+
+      const row = monthRow(month.dday, month.tag);
+      if (items.length) {
+        const ul = document.createElement('ul');
+        ul.className = 'tl-items';
+        items.forEach(({ it, ii }) => {
+          const id = `timeline-summary-m${mi}-i${ii}`;
+          // items with known brideIndexes act as a parent over the matching
+          // 카테고리 컬럼 entries, so its check state is derived from them
+          const childIds = it.brideIndexes
+            ? it.brideIndexes.map(idx => `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, ''))
+            : null;
+          ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)', childIds));
+        });
+        row.appendChild(ul);
+      } else {
+        row.appendChild(emptyNote());
+      }
+      col.appendChild(row);
+    });
+  }
+
+  function renderBrideCategoryColumn(col, cat) {
+    CALENDAR_BRIDE.months.forEach((month, mi) => {
+      const row = monthRow(month.dday);
       const items = month.sections[cat];
       if (items && items.length) {
         const ul = document.createElement('ul');
@@ -142,8 +203,112 @@
           ul.appendChild(li);
         });
         row.appendChild(ul);
+      } else {
+        row.appendChild(emptyNote());
       }
       col.appendChild(row);
     });
-  });
+  }
+
+  function renderGroomCategoryColumn(col, cat) {
+    CALENDAR_GROOM.months.forEach((month, mi) => {
+      const row = monthRow(month.dday);
+      // 원본 위치(bi)를 먼저 붙인 뒤 걸러야 calendar.js의 renderGroomMonth와
+      // 동일한 groom-m{mi}-item{bi} / groom-m{mi}-tip{bi}-{ti} id가 나온다.
+      // fields(일정·장소 텍스트 입력)는 체크박스가 아니라 제외한다
+      const blocks = month.blocks
+        .map((block, bi) => ({ block, bi }))
+        .filter(({ block }) => block.cat === cat && block.type !== 'fields');
+
+      if (blocks.length) {
+        const ul = document.createElement('ul');
+        ul.className = 'tl-items';
+        blocks.forEach(({ block, bi }) => {
+          if (block.type === 'item') {
+            // 신랑용 id에는 bride와 달리 .replace(/\s/g, '')를 적용하지 않는다 —
+            // calendar.js가 그렇게 만들지 않으므로 여기서도 그대로 맞춘다
+            const id = `groom-m${mi}-item${bi}`;
+            const li = checkboxRow(id, block.text);
+            if (block.sub) li.appendChild(subList(block.sub));
+            ul.appendChild(li);
+          } else if (block.type === 'tip') {
+            const label = document.createElement('li');
+            label.className = 'tl-tip-label';
+            label.textContent = 'tip ' + block.title;
+            ul.appendChild(label);
+            block.items.forEach((t, ti) => {
+              ul.appendChild(checkboxRow(`groom-m${mi}-tip${bi}-${ti}`, t));
+            });
+          }
+        });
+        row.appendChild(ul);
+      } else {
+        row.appendChild(emptyNote());
+      }
+      col.appendChild(row);
+    });
+  }
+
+  const columnsEl = document.getElementById('tl-columns');
+  const genderTabs = Array.from(document.querySelectorAll('#gender-tabs button'));
+  const categoryTabs = Array.from(document.querySelectorAll('#category-tabs button'));
+
+  const state = {
+    gender: localStorage.getItem('timeline-gender') || 'bride',
+    category: localStorage.getItem('timeline-category') || 'all'
+  };
+
+  function render() {
+    // 탭을 바꿀 때마다 컬럼을 통째로 다시 그리므로, 이전 렌더에서 등록된
+    // group을 비우지 않으면 화면에서 사라진 체크박스를 가리키는 좀비 group이
+    // 쌓여 부분체크 계산이 어긋난다
+    groups.length = 0;
+    columnsEl.innerHTML = '';
+
+    const catFilter = state.category === 'all' ? null : state.category;
+    const isBride = state.gender === 'bride';
+    columnsEl.classList.toggle('dense', !catFilter);
+    columnsEl.classList.toggle('two-col', !!catFilter && isBride);
+    columnsEl.classList.toggle('one-col', !!catFilter && !isBride);
+
+    if (isBride) {
+      const summary = columnShell('캘린더 전체요약', 'summary');
+      if (!catFilter) {
+        summary.wrap.insertBefore(legend(), summary.col);
+      } else if (!summaryHasCat(catFilter)) {
+        const note = document.createElement('div');
+        note.className = 'tl-empty';
+        note.textContent = '전체요약에는 아직 이 카테고리 항목이 없습니다. 오른쪽에서 전체 항목을 확인하세요.';
+        summary.wrap.insertBefore(note, summary.col);
+      }
+      renderSummaryColumn(summary.col, catFilter);
+      columnsEl.appendChild(summary.wrap);
+    }
+
+    const cats = catFilter ? [catFilter] : BRIDE_CATS;
+    cats.forEach(cat => {
+      const column = columnShell(`${cat} 전체`, CAT_KEY[cat]);
+      if (isBride) renderBrideCategoryColumn(column.col, cat);
+      else renderGroomCategoryColumn(column.col, cat);
+      columnsEl.appendChild(column.wrap);
+    });
+  }
+
+  genderTabs.forEach(b => b.addEventListener('click', () => {
+    state.gender = b.dataset.gender;
+    localStorage.setItem('timeline-gender', state.gender);
+    genderTabs.forEach(x => x.classList.toggle('active', x === b));
+    render();
+  }));
+
+  categoryTabs.forEach(b => b.addEventListener('click', () => {
+    state.category = b.dataset.category;
+    localStorage.setItem('timeline-category', state.category);
+    categoryTabs.forEach(x => x.classList.toggle('active', x === b));
+    render();
+  }));
+
+  genderTabs.forEach(b => b.classList.toggle('active', b.dataset.gender === state.gender));
+  categoryTabs.forEach(b => b.classList.toggle('active', b.dataset.category === state.category));
+  render();
 })();
