@@ -36,10 +36,6 @@
   margin: 0 auto;
 }
 
-@media (max-width: 1200px) {
-  .tl-columns { grid-template-columns: repeat(3, 1fr); }
-}
-
 @media (max-width: 900px) {
   .tl-columns { grid-template-columns: repeat(2, 1fr); }
   .tl-columns.two-col { grid-template-columns: 1fr; max-width: none; }
@@ -122,22 +118,23 @@
 }
 
 ul.tl-items { list-style: none; margin: 0; padding: 0; }
-ul.tl-items li { margin-bottom: 6px; }
+ul.tl-items li { margin-bottom: 2px; }
 
 label.tl-check {
   display: flex;
   align-items: flex-start;
-  gap: 7px;
+  gap: 8px;
   font-size: 12.5px;
   line-height: 1.5;
+  padding: 12px 0;
   cursor: pointer;
 }
 
 label.tl-check input[type="checkbox"] {
   margin-top: 3px;
   flex: none;
-  width: 13px;
-  height: 13px;
+  width: 17px;
+  height: 17px;
   accent-color: var(--ink);
 }
 

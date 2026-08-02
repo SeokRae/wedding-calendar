@@ -20,12 +20,12 @@
   }
 
   function isChecked(id) {
-    return localStorage.getItem(id) === '1';
+    return WeddingStore.get(id) === '1';
   }
 
   function setChecked(id, checked) {
-    if (checked) localStorage.setItem(id, '1');
-    else localStorage.removeItem(id);
+    if (checked) WeddingStore.set(id, '1');
+    else WeddingStore.remove(id);
     document.querySelectorAll(`input[data-sync-id="${id}"]`).forEach(el => {
       el.checked = checked;
     });
@@ -234,8 +234,8 @@
   const categoryTabs = Array.from(document.querySelectorAll('#category-tabs button'));
 
   const state = {
-    gender: localStorage.getItem('timeline-gender') || 'bride',
-    category: localStorage.getItem('timeline-category') || 'all'
+    gender: WeddingStore.get('timeline-gender') || 'bride',
+    category: WeddingStore.get('timeline-category') || 'all'
   };
 
   function render() {
@@ -270,21 +270,34 @@
     });
   }
 
+  function setActive(tabs, isActive) {
+    tabs.forEach(x => {
+      const active = isActive(x);
+      x.classList.toggle('active', active);
+      x.setAttribute('aria-pressed', String(active));
+    });
+  }
+
   genderTabs.forEach(b => b.addEventListener('click', () => {
     state.gender = b.dataset.gender;
-    localStorage.setItem('timeline-gender', state.gender);
-    genderTabs.forEach(x => x.classList.toggle('active', x === b));
+    WeddingStore.set('timeline-gender', state.gender);
+    setActive(genderTabs, x => x === b);
     render();
   }));
 
   categoryTabs.forEach(b => b.addEventListener('click', () => {
     state.category = b.dataset.category;
-    localStorage.setItem('timeline-category', state.category);
-    categoryTabs.forEach(x => x.classList.toggle('active', x === b));
+    WeddingStore.set('timeline-category', state.category);
+    setActive(categoryTabs, x => x === b);
     render();
   }));
 
-  genderTabs.forEach(b => b.classList.toggle('active', b.dataset.gender === state.gender));
-  categoryTabs.forEach(b => b.classList.toggle('active', b.dataset.category === state.category));
+  setActive(genderTabs, b => b.dataset.gender === state.gender);
+  setActive(categoryTabs, b => b.dataset.category === state.category);
   render();
+
+  if (!WeddingStore.available) {
+    const footer = document.querySelector('.site-footer');
+    if (footer) footer.textContent = '이 브라우저에서는 체크 상태가 저장되지 않습니다 (프라이빗 모드이거나 사이트 데이터가 차단되어 있을 수 있습니다).';
+  }
 })();

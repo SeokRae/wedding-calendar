@@ -9,16 +9,16 @@ const GLOSSARY = {
       { term: "보증인원", def: "식장 계약 시 최소로 보장해야 하는 하객 수", uncertainTerm: true },
       { term: "미니멈개런티", def: "일정 인원 이상 식대 지불이 필요한 조건", uncertainTerm: true }
     ]},
-    { no: "②③", title: "촬영·스냅 (용어명 확인 필요)", unconfirmed: true, terms: [
-      { term: null, def: "촬영할 때 포즈나 표정을 안내해주는 진행" },
-      { term: null, def: "예약이 빠르게 마감되는 촬영 작가" },
-      { term: null, def: "전체 촬영을 총괄하는 대표 작가" },
-      { term: null, def: "대표 작가를 보조하는 촬영 인원" },
+    { no: "②③", title: "촬영·스냅", terms: [
+      { term: "디렉팅", def: "촬영할 때 포즈나 표정을 안내해주는 진행", uncertainTerm: true },
+      { term: "인기 작가", def: "예약이 빠르게 마감되는 촬영 작가", uncertainTerm: true },
+      { term: "메인 작가", def: "전체 촬영을 총괄하는 대표 작가", uncertainTerm: true },
+      { term: "서브 작가", def: "대표 작가를 보조하는 촬영 인원", uncertainTerm: true },
       { term: "스냅", def: "결혼식 당일 자연스럽게 순간을 담는 사진" },
-      { term: null, def: "예식 촬영과 함께 추가로 진행되는 촬영" },
-      { term: null, def: "아이폰으로 감성 위주 촬영하는 방식" },
-      { term: null, def: "결혼식 전 과정을 촬영하여 영상으로 제작" },
-      { term: null, def: "결혼식 후 함께 찍는 가족·친척 단체 사진" }
+      { term: "추가 촬영", def: "예식 촬영과 함께 추가로 진행되는 촬영", uncertainTerm: true },
+      { term: "아이폰 스냅", def: "아이폰으로 감성 위주 촬영하는 방식", uncertainTerm: true },
+      { term: "본식 DVD", def: "결혼식 전 과정을 촬영하여 영상으로 제작", uncertainTerm: true },
+      { term: "원판", def: "결혼식 후 함께 찍는 가족·친척 단체 사진", uncertainTerm: true }
     ]},
     { no: "④", title: "플래너", terms: [
       { term: "동행 플래너", def: "일정과 촬영 등에 함께 동행하는 플래너" },

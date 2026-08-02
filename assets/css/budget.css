@@ -46,6 +46,10 @@
   .budget-sections { column-count: 1; }
 }
 
+@media (max-width: 560px) {
+  .budget-tiers { grid-template-columns: 1fr; }
+}
+
 .budget-card {
   background: var(--card-bg);
   border: 1px solid var(--border);

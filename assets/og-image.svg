@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F7EEE1"/>
+  <rect x="36" y="36" width="1128" height="558" fill="none" stroke="#2E2A25" stroke-width="3"/>
+  <rect x="486" y="96" width="228" height="46" rx="23" fill="#2E2A25"/>
+  <text x="600" y="126" font-family="Arial, Helvetica, sans-serif" font-size="17" letter-spacing="4" text-anchor="middle" fill="#F7EEE1">WEDDING PLAN</text>
+  <text x="600" y="290" font-family="Georgia, 'Times New Roman', serif" font-size="110" font-weight="bold" letter-spacing="16" text-anchor="middle" fill="#2E2A25">HOME</text>
+  <text x="600" y="360" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="30" text-anchor="middle" fill="#756B5E">결혼 준비를 위한 체크리스트 · 예산 · 용어 도구 모음</text>
+  <rect x="486" y="440" width="228" height="1.5" fill="#E3D6C2"/>
+  <text x="600" y="480" font-family="Arial, Helvetica, sans-serif" font-size="16" text-anchor="middle" fill="#756B5E">seokrae.github.io/wedding-calendar</text>
+</svg>
