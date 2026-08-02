@@ -292,6 +292,56 @@
     });
   }
 
+  // 데이터를 다시 훑지 않고, 지금 화면에 렌더링된 칼럼(현재 필터·체크
+  // 상태 그대로)을 그대로 읽어 이미지 렌더러용 레코드로 옮긴다 — 렌더링
+  // 로직과 별도로 유지보수할 필요가 없도록 항상 화면과 일치시키기 위함.
+  function appendTlItemRecords(ul, records) {
+    if (!ul) return;
+    Array.from(ul.children).forEach(li => {
+      if (li.classList.contains('tl-tip-label')) {
+        records.push({ type: 'section', text: li.textContent.trim(), color: ShareImage.cssVar('--sub-ink') });
+        return;
+      }
+      const label = li.querySelector(':scope > label.tl-check');
+      if (!label) return;
+      const cb = label.querySelector('input[type="checkbox"]');
+      const text = label.querySelector('.tl-check-text').textContent.trim();
+      const source = label.querySelector('.tl-source');
+      const fullText = text + (source ? ` (${source.textContent.trim()})` : '');
+      records.push({ type: 'item', text: fullText, checked: cb.checked });
+      const sub = li.querySelector(':scope > ul.sub');
+      if (sub) Array.from(sub.children).forEach(s => records.push({ type: 'sub', text: s.textContent.trim().replace(/^–\s*/, '') }));
+    });
+  }
+
+  function appendTlColumnRecords(wrap, headingText, color, records) {
+    records.push({ type: 'section', text: headingText, color });
+    Array.from(wrap.querySelector('.tl-column').children).forEach(row => {
+      const itemsUl = row.querySelector('ul.tl-items');
+      if (!itemsUl) return; // '해당 없음' 등 빈 월은 생략
+      records.push({ type: 'dday', text: row.querySelector('.tl-dday').textContent.trim() });
+      appendTlItemRecords(itemsUl, records);
+    });
+    records.push({ type: 'spacer', size: 18 });
+  }
+
+  function buildShareRecords() {
+    const catFilter = state.category === 'all' ? null : state.category;
+    const catLabel = state.category === 'all' ? '전체' : state.category;
+    const records = [{ type: 'title', text: `웨딩 타임라인 (${catLabel})` }];
+
+    const wraps = Array.from(columnsEl.children);
+    appendTlColumnRecords(wraps[0], '캘린더 전체요약', ShareImage.cssVar('--ink'), records);
+
+    const cats = catFilter ? [catFilter] : CATS;
+    cats.forEach((cat, i) => {
+      appendTlColumnRecords(wraps[i + 1], `${cat} 전체`, ShareImage.cssVar(`--cat-${CAT_KEY[cat]}`), records);
+    });
+
+    records.push({ type: 'footer', text: `by 웨딩 타임라인 · ${location.href}` });
+    return records;
+  }
+
   function setActive(tabs, isActive) {
     tabs.forEach(x => {
       const active = isActive(x);
@@ -309,6 +359,12 @@
 
   setActive(categoryTabs, b => b.dataset.category === state.category);
   render();
+
+  const copyBtn = document.getElementById('copy-btn');
+  const copyFeedback = document.getElementById('copy-feedback');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => ShareImage.copyImageWithFeedback(buildShareRecords(), copyFeedback));
+  }
 
   if (!WeddingStore.available) {
     const footer = document.querySelector('.site-footer');

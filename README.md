@@ -34,6 +34,7 @@ wedding-calendar/
 │   └── js/
 │       ├── storage.js       localStorage 안전 래퍼 (wedding: 네임스페이스, 접근 차단 시 no-op)
 │       ├── shared-id.js     신부/신랑 항목 중 같은 할 일을 가리키는 항목의 체크 id를 공유시키는 헬퍼 (resolveCheckId)
+│       ├── share-image.js   우하단 FAB "이미지로 복사" 공통 렌더러 (Canvas 2D로 카드 이미지 생성 후 클립보드에 복사, 실패 시 PNG 다운로드 폴백)
 │       ├── calendar.js      캘린더 렌더링 로직 (체크박스/입력값 저장)
 │       ├── timeline.js      타임라인 렌더링 로직 (calendar-bride.js/calendar-groom.js 데이터를 원본 id 그대로 재사용해 캘린더 도구와 체크 연동)
 │       ├── budget.js        예산 가이드 렌더링 로직
