@@ -45,10 +45,9 @@ const CALENDAR_GROOM = {
       {type:"item", text:"전입신고 및 확정일자 준비하기", sub:["확정일자: 보증금 보호 목적 (계약 후 즉시)","전입신고: 실제 거주 주소 변경 (이사 후 14일 이내)"]},
       {type:"item", text:"폐백 진행 여부 부모님께 여쭤보기"}
     ]},
-    { dday: "D-6개월", alt: "3개월", partial: true, blocks: [
-      {type:"item", text:"촬영 날짜 확정하기"},
-      {type:"item", text:"촬영 전 미용실 예약·커트"},
-      {type:"item", text:"신부 드레스 가봉 날짜 확인"},
+    { dday: "D-6개월", alt: "3개월", blocks: [
+      {type:"item", text:"웨딩 촬영 날짜 확인하기 (촬영 전 미용실 염색·커트)"},
+      {type:"item", text:"촬영 드레스 가봉 날짜 확인"},
       {type:"item", text:"촬영 대여제품 반납 주소 확인"},
       {type:"item", text:"결혼식 사회자·축가 정하기 (전문 사회자·친한 친구 중 정하기)"},
       {type:"item", text:"결혼식 주례·비주례 정하기"},

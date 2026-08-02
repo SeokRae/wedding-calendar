@@ -36,5 +36,5 @@ wedding-calendar/
 
 ## 알려진 제약
 
-- `calendar-bride.js`의 D-6개월, `calendar-groom.js`의 D-6개월 항목은 원본 이미지에서 중앙 뱃지("신부용"/"신랑용")에 가려져 일부만 옮겨졌다. 원본 확인 후 보완 필요.
+- `calendar-bride.js`의 D-6개월 항목은 원본 이미지에서 중앙 뱃지("신부용")에 가려져 일부만 옮겨졌다. 원본 확인 후 보완 필요. (`calendar-groom.js`의 D-6개월은 확인 완료)
 - 체크 상태·입력 필드 값은 `localStorage`에 저장되므로 브라우저/기기 간 동기화되지 않는다.
