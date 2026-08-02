@@ -18,10 +18,16 @@
 
     const cb = document.createElement('input');
     cb.type = 'checkbox';
+    cb.dataset.syncId = id;
     cb.checked = localStorage.getItem(id) === '1';
     cb.addEventListener('change', () => {
       if (cb.checked) localStorage.setItem(id, '1');
       else localStorage.removeItem(id);
+      // 캘린더 전체요약 항목과 스드메/신혼집 칼럼이 같은 id를 공유하는 경우,
+      // 새로고침 없이 같은 화면에서 바로 서로 체크 상태를 맞춘다
+      document.querySelectorAll(`input[data-sync-id="${id}"]`).forEach(other => {
+        if (other !== cb) other.checked = cb.checked;
+      });
     });
     label.appendChild(cb);
 
@@ -64,7 +70,11 @@
     const ul = document.createElement('ul');
     ul.className = 'tl-items';
     month.items.forEach((it, ii) => {
-      const id = `timeline-summary-m${mi}-i${ii}`;
+      // items with a known brideIndex reuse the calendar tool's bride-view id,
+      // so checking them here also checks the matching 스드메/신혼집 column entry
+      const id = (it.cat === '스드메' || it.cat === '신혼집') && it.brideIndex != null
+        ? `bride-m${mi}-${it.cat}-${it.brideIndex}`.replace(/\s/g, '')
+        : `timeline-summary-m${mi}-i${ii}`;
       ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)'));
     });
     row.appendChild(ul);

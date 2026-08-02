@@ -30,6 +30,28 @@
 .tl-col-header.sdm { background: var(--cat-sdm); }
 .tl-col-header.home { background: var(--cat-home); }
 
+.tl-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: -8px 0 16px;
+  font-size: 11px;
+  color: var(--sub-ink);
+}
+
+.tl-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tl-legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+
 .tl-column {
   padding-left: 14px;
   border-left: 2px solid var(--border);
