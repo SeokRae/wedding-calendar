@@ -31,7 +31,7 @@
     });
   }
 
-  function checkboxRow(id, text, dotColor) {
+  function checkboxRow(id, text, dotColor, dotLabel) {
     const li = document.createElement('li');
     const label = document.createElement('label');
     label.className = 'tl-check';
@@ -47,6 +47,7 @@
       const dot = document.createElement('span');
       dot.className = 'tl-dot';
       dot.style.background = dotColor;
+      if (dotLabel) dot.title = dotLabel;
       label.appendChild(dot);
     }
 
@@ -157,7 +158,7 @@
         const ul = document.createElement('ul');
         ul.className = 'tl-items';
         rows.forEach(r => {
-          ul.appendChild(checkboxRow(r.id, r.text, CAT_VAR[r.cat] || 'var(--ink)'));
+          ul.appendChild(checkboxRow(r.id, r.text, CAT_VAR[r.cat] || 'var(--ink)', r.cat));
         });
         row.appendChild(ul);
       } else {
