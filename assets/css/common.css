@@ -136,6 +136,9 @@ footer.site-footer {
   /* 터치 화면에서 탭 버튼을 44px에 가깝게 넓힌다 */
   .gender-tabs button { padding: 13px 22px; }
   .category-tabs button { padding: 11px 14px; }
+  /* 홈으로 링크의 탭 영역을 넓히되, 음수 margin으로 상쇄해 텍스트
+     위치와 주변 여백은 그대로 유지한다 */
+  .top-row .back-link { font-size: 14px; padding: 8px 4px; margin: -8px 0 -2px -4px; }
 }
 
 @media print {
