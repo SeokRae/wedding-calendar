@@ -33,22 +33,23 @@
 }
 
 ul.items { list-style: none; margin: 0; padding: 0; }
-ul.items > li { margin-bottom: 6px; }
+ul.items > li { margin-bottom: 2px; }
 
 label.item {
   display: flex;
   align-items: flex-start;
-  gap: 7px;
+  gap: 8px;
   font-size: 13px;
   line-height: 1.4;
+  padding: 13px 0;
   cursor: pointer;
 }
 
 label.item input[type="checkbox"] {
   margin-top: 2px;
   flex: none;
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   accent-color: var(--ink);
 }
 
@@ -95,8 +96,8 @@ ul.sub li { font-size: 11.5px; color: var(--sub-ink); margin-bottom: 3px; }
   border: none;
   border-bottom: 1px solid var(--border);
   background: transparent;
-  font-size: 13px;
-  padding: 2px 0;
+  font-size: 16px;
+  padding: 6px 0;
   font-family: inherit;
   color: var(--ink);
 }

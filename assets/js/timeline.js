@@ -270,22 +270,30 @@
     });
   }
 
+  function setActive(tabs, isActive) {
+    tabs.forEach(x => {
+      const active = isActive(x);
+      x.classList.toggle('active', active);
+      x.setAttribute('aria-pressed', String(active));
+    });
+  }
+
   genderTabs.forEach(b => b.addEventListener('click', () => {
     state.gender = b.dataset.gender;
     WeddingStore.set('timeline-gender', state.gender);
-    genderTabs.forEach(x => x.classList.toggle('active', x === b));
+    setActive(genderTabs, x => x === b);
     render();
   }));
 
   categoryTabs.forEach(b => b.addEventListener('click', () => {
     state.category = b.dataset.category;
     WeddingStore.set('timeline-category', state.category);
-    categoryTabs.forEach(x => x.classList.toggle('active', x === b));
+    setActive(categoryTabs, x => x === b);
     render();
   }));
 
-  genderTabs.forEach(b => b.classList.toggle('active', b.dataset.gender === state.gender));
-  categoryTabs.forEach(b => b.classList.toggle('active', b.dataset.category === state.category));
+  setActive(genderTabs, b => b.dataset.gender === state.gender);
+  setActive(categoryTabs, b => b.dataset.category === state.category);
   render();
 
   if (!WeddingStore.available) {
