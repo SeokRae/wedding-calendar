@@ -1,0 +1,91 @@
+.budget-summary-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.budget-summary-table .cell {
+  background: var(--card-bg);
+  padding: 12px 10px;
+  text-align: center;
+}
+
+.budget-summary-table .cell .no { font-size: 11px; color: var(--sub-ink); }
+.budget-summary-table .cell .label { font-size: 12.5px; font-weight: bold; margin: 4px 0; }
+.budget-summary-table .cell .range { font-size: 11.5px; color: var(--sub-ink); }
+
+.budget-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.budget-tiers .tier {
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 20px;
+  padding: 10px;
+  text-align: center;
+  font-size: 12.5px;
+}
+
+.budget-tiers .tier b { display: block; font-size: 13px; margin-bottom: 2px; }
+
+.budget-sections {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 800px) {
+  .budget-sections { grid-template-columns: 1fr; }
+}
+
+.budget-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  align-self: start;
+}
+
+.budget-card h3 { font-size: 14px; margin: 0 0 4px; }
+.budget-card .section-note { font-size: 11px; color: var(--sub-ink); margin-bottom: 8px; }
+
+.budget-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 12.5px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.budget-row:last-of-type { border-bottom: none; }
+.budget-row .b-label { font-weight: bold; flex: none; min-width: 100px; }
+.budget-row .b-range { flex: none; }
+.budget-row .b-note { flex: 1 1 100%; font-size: 11px; color: var(--sub-ink); }
+
+.budget-sub-note {
+  font-size: 10.5px;
+  color: var(--sub-ink);
+  margin: -2px 0 6px;
+  padding-left: 4px;
+}
+
+.budget-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1.5px solid var(--ink);
+  font-size: 13px;
+  font-weight: bold;
+}

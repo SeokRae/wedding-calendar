@@ -11,20 +11,24 @@ wedding-calendar/
 ├── index.html              홈 — 도구 목록 페이지
 ├── pages/
 │   ├── calendar.html        캘린더 도구 (신부용 ↔ 신랑용 탭)
-│   └── timeline.html        타임라인 도구 (월별 요약 + 스드메·신혼집 전체 보기)
+│   ├── timeline.html        타임라인 도구 (월별 요약 + 스드메·신혼집 전체 보기)
+│   └── budget.html          예산 가이드 도구 (항목별 비용 범위 + 총액대)
 ├── data/
 │   ├── calendar-bride.js    신부용 캘린더 콘텐츠 (섹션별 체크리스트)
 │   ├── calendar-groom.js    신랑용 캘린더 콘텐츠 (항목 나열형 + tip/입력 필드)
-│   └── timeline-summary.js  타임라인 "캘린더 전체요약" 칼럼 콘텐츠
+│   ├── timeline-summary.js  타임라인 "캘린더 전체요약" 칼럼 콘텐츠
+│   └── budget.js            예산 가이드 콘텐츠 (요약표 + 항목별 상세)
 ├── assets/
 │   ├── css/
 │   │   ├── common.css       색상 변수, 리셋, 헤더/타이틀 공통 스타일
 │   │   ├── home.css         홈 페이지(도구 카드 목록) 전용 스타일
 │   │   ├── calendar.css     캘린더 도구 전용 스타일 (탭, 카드, tip 박스 등)
-│   │   └── timeline.css     타임라인 도구 전용 스타일 (3칼럼, 카테고리 색점)
+│   │   ├── timeline.css     타임라인 도구 전용 스타일 (3칼럼, 카테고리 색점)
+│   │   └── budget.css       예산 가이드 전용 스타일 (요약표, 항목 카드)
 │   └── js/
 │       ├── calendar.js      캘린더 렌더링 로직 (체크박스/입력값 localStorage 저장)
-│       └── timeline.js      타임라인 렌더링 로직 (calendar-bride.js 데이터 재사용)
+│       ├── timeline.js      타임라인 렌더링 로직 (calendar-bride.js 데이터 재사용)
+│       └── budget.js        예산 가이드 렌더링 로직
 └── README.md
 ```
 
@@ -41,4 +45,5 @@ wedding-calendar/
 ## 알려진 제약
 
 - `calendar-bride.js`의 D-6개월 항목은 원본 이미지에서 중앙 뱃지("신부용")에 가려져 일부만 옮겨졌다. 원본 확인 후 보완 필요. (`calendar-groom.js`의 D-6개월은 확인 완료)
+- `budget.js`의 "본식 스냅" 섹션 노트("원판이란?")는 원본 이미지에서 문장이 잘려 일부만 옮겨졌다.
 - 체크 상태·입력 필드 값은 `localStorage`에 저장되므로 브라우저/기기 간 동기화되지 않는다.
