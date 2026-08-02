@@ -168,7 +168,7 @@
           const id = `timeline-summary-m${mi}-i${ii}`;
           // items with known brideIndexes act as a parent over the matching
           // 카테고리 컬럼 entries, so its check state is derived from them
-          const childIds = (it.cat === '스드메' || it.cat === '신혼집') && it.brideIndexes
+          const childIds = it.brideIndexes
             ? it.brideIndexes.map(idx => `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, ''))
             : null;
           ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)', childIds));
