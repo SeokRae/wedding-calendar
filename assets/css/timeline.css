@@ -39,6 +39,10 @@
 @media (max-width: 900px) {
   .tl-columns { grid-template-columns: repeat(2, 1fr); }
   .tl-columns.two-col { grid-template-columns: 1fr; max-width: none; }
+  /* 이 폭에서는 전체요약(필터링됨) 칼럼과 카테고리 전체 칼럼이 같은 내용을
+     세로로 두 번 보여주게 되므로, 전체요약 칼럼을 숨기고 카테고리 전체
+     칼럼만 남긴다. 데스크톱(두 칼럼이 나란히 배치될 때)은 그대로 유지 */
+  .tl-columns.two-col > *:first-child { display: none; }
 }
 
 @media (max-width: 620px) {
