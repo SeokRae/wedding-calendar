@@ -19,11 +19,6 @@
     return typeof item === 'object' ? item.text : item;
   }
 
-  // 캘린더 전체요약의 항목(상위 개념)이 카테고리 컬럼의 하위 항목 여러 개를
-  // 아우르는 경우를 추적하는 목록. 하위 항목이 몇 개인지, 그중 몇 개가 체크됐는지를
-  // 비교해 상위 체크박스를 전체 체크/부분 체크/미체크 상태로 맞춘다
-  const groups = [];
-
   function isChecked(id) {
     return localStorage.getItem(id) === '1';
   }
@@ -36,18 +31,7 @@
     });
   }
 
-  function refreshGroup(group) {
-    const total = group.childIds.length;
-    const checkedCount = group.childIds.filter(isChecked).length;
-    group.cb.checked = checkedCount === total;
-    group.cb.indeterminate = checkedCount > 0 && checkedCount < total;
-  }
-
-  function refreshAllGroups() {
-    groups.forEach(refreshGroup);
-  }
-
-  function checkboxRow(id, text, dotColor, childIds) {
+  function checkboxRow(id, text, dotColor) {
     const li = document.createElement('li');
     const label = document.createElement('label');
     label.className = 'tl-check';
@@ -55,22 +39,8 @@
     const cb = document.createElement('input');
     cb.type = 'checkbox';
     cb.dataset.syncId = id;
-
-    if (childIds && childIds.length) {
-      const group = { cb, childIds };
-      groups.push(group);
-      refreshGroup(group);
-      cb.addEventListener('change', () => {
-        childIds.forEach(cid => setChecked(cid, cb.checked));
-        refreshAllGroups();
-      });
-    } else {
-      cb.checked = isChecked(id);
-      cb.addEventListener('change', () => {
-        setChecked(id, cb.checked);
-        refreshAllGroups();
-      });
-    }
+    cb.checked = isChecked(id);
+    cb.addEventListener('change', () => setChecked(id, cb.checked));
     label.appendChild(cb);
 
     if (dotColor) {
@@ -160,30 +130,34 @@
 
   function renderSummaryColumn(col, catFilter) {
     TIMELINE_SUMMARY.forEach((month, mi) => {
-      // 원본 위치(ii)를 먼저 붙인 뒤 걸러야 카테고리로 필터링해도 항목의
-      // localStorage id(timeline-summary-m{mi}-i{ii})가 흔들리지 않는다
-      const items = month.items
-        .map((it, ii) => ({ it, ii }))
-        .filter(({ it }) => !catFilter || it.cat === catFilter);
+      // 큐레이션 항목(it)이 brideIndexes를 가지면, 그 인덱스가 가리키는 실제
+      // 캘린더 항목을 찾아 원문 그대로 한 줄씩 보여준다 — 문구를 따로 갖지
+      // 않으므로 캘린더 쪽 문구를 고치면 여기도 항상 그대로 반영된다.
+      // brideIndexes가 없는 예외 항목(D-6 신혼집 등, 원본 캘린더에 대응하는
+      // 데이터 자체가 없는 경우)만 자기 text를 그대로 쓴다
+      const rows = [];
+      month.items.forEach((it, ii) => {
+        if (catFilter && it.cat !== catFilter) return;
+        if (it.brideIndexes) {
+          it.brideIndexes.forEach(idx => {
+            const brideItem = (CALENDAR_BRIDE.months[mi].sections[it.cat] || [])[idx];
+            // same id scheme as renderBrideCategoryColumn, so checking here
+            // stays in sync with the calendar tool (and the groom side via
+            // resolveCheckId when the underlying bride item has a link)
+            const defaultId = `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, '');
+            rows.push({ id: resolveCheckId(defaultId, brideItem), text: itemText(brideItem), cat: it.cat });
+          });
+        } else {
+          rows.push({ id: `timeline-summary-m${mi}-i${ii}`, text: it.text, cat: it.cat });
+        }
+      });
 
       const row = monthRow(month.dday, month.tag);
-      if (items.length) {
+      if (rows.length) {
         const ul = document.createElement('ul');
         ul.className = 'tl-items';
-        items.forEach(({ it, ii }) => {
-          const id = `timeline-summary-m${mi}-i${ii}`;
-          // items with known brideIndexes act as a parent over the matching
-          // 카테고리 컬럼 entries, so its check state is derived from them.
-          // 그 카테고리 컬럼 항목이 link로 신랑 항목과 공유 id를 쓰는 경우,
-          // 실제 항목 객체를 찾아 같은 공유 id를 자식으로 넣어야 어긋나지 않는다
-          const childIds = it.brideIndexes
-            ? it.brideIndexes.map(idx => {
-                const brideItem = (CALENDAR_BRIDE.months[mi].sections[it.cat] || [])[idx];
-                const defaultId = `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, '');
-                return resolveCheckId(defaultId, brideItem);
-              })
-            : null;
-          ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)', childIds));
+        rows.forEach(r => {
+          ul.appendChild(checkboxRow(r.id, r.text, CAT_VAR[r.cat] || 'var(--ink)'));
         });
         row.appendChild(ul);
       } else {
@@ -265,10 +239,6 @@
   };
 
   function render() {
-    // 탭을 바꿀 때마다 컬럼을 통째로 다시 그리므로, 이전 렌더에서 등록된
-    // group을 비우지 않으면 화면에서 사라진 체크박스를 가리키는 좀비 group이
-    // 쌓여 부분체크 계산이 어긋난다
-    groups.length = 0;
     columnsEl.innerHTML = '';
 
     const catFilter = state.category === 'all' ? null : state.category;
