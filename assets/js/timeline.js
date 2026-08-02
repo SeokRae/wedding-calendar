@@ -204,10 +204,51 @@
     });
   }
 
+  function renderGroomCategoryColumn(col, cat) {
+    CALENDAR_GROOM.months.forEach((month, mi) => {
+      const row = monthRow(month.dday);
+      // 원본 위치(bi)를 먼저 붙인 뒤 걸러야 calendar.js의 renderGroomMonth와
+      // 동일한 groom-m{mi}-item{bi} / groom-m{mi}-tip{bi}-{ti} id가 나온다.
+      // fields(일정·장소 텍스트 입력)는 체크박스가 아니라 제외한다
+      const blocks = month.blocks
+        .map((block, bi) => ({ block, bi }))
+        .filter(({ block }) => block.cat === cat && block.type !== 'fields');
+
+      if (blocks.length) {
+        const ul = document.createElement('ul');
+        ul.className = 'tl-items';
+        blocks.forEach(({ block, bi }) => {
+          if (block.type === 'item') {
+            // 신랑용 id에는 bride와 달리 .replace(/\s/g, '')를 적용하지 않는다 —
+            // calendar.js가 그렇게 만들지 않으므로 여기서도 그대로 맞춘다
+            const id = `groom-m${mi}-item${bi}`;
+            const li = checkboxRow(id, block.text);
+            if (block.sub) li.appendChild(subList(block.sub));
+            ul.appendChild(li);
+          } else if (block.type === 'tip') {
+            const label = document.createElement('li');
+            label.className = 'tl-tip-label';
+            label.textContent = 'tip ' + block.title;
+            ul.appendChild(label);
+            block.items.forEach((t, ti) => {
+              ul.appendChild(checkboxRow(`groom-m${mi}-tip${bi}-${ti}`, t));
+            });
+          }
+        });
+        row.appendChild(ul);
+      } else {
+        row.appendChild(emptyNote());
+      }
+      col.appendChild(row);
+    });
+  }
+
   const columnsEl = document.getElementById('tl-columns');
+  const genderTabs = Array.from(document.querySelectorAll('#gender-tabs button'));
   const categoryTabs = Array.from(document.querySelectorAll('#category-tabs button'));
 
   const state = {
+    gender: localStorage.getItem('timeline-gender') || 'bride',
     category: localStorage.getItem('timeline-category') || 'all'
   };
 
@@ -219,21 +260,33 @@
     columnsEl.innerHTML = '';
 
     const catFilter = state.category === 'all' ? null : state.category;
+    const isBride = state.gender === 'bride';
     columnsEl.classList.toggle('dense', !catFilter);
-    columnsEl.classList.toggle('two-col', !!catFilter);
+    columnsEl.classList.toggle('two-col', !!catFilter && isBride);
+    columnsEl.classList.toggle('one-col', !!catFilter && !isBride);
 
-    const summary = columnShell('캘린더 전체요약', 'summary');
-    if (!catFilter) summary.wrap.insertBefore(legend(), summary.col);
-    renderSummaryColumn(summary.col, catFilter);
-    columnsEl.appendChild(summary.wrap);
+    if (isBride) {
+      const summary = columnShell('캘린더 전체요약', 'summary');
+      if (!catFilter) summary.wrap.insertBefore(legend(), summary.col);
+      renderSummaryColumn(summary.col, catFilter);
+      columnsEl.appendChild(summary.wrap);
+    }
 
     const cats = catFilter ? [catFilter] : BRIDE_CATS;
     cats.forEach(cat => {
       const column = columnShell(`${cat} 전체`, CAT_KEY[cat]);
-      renderBrideCategoryColumn(column.col, cat);
+      if (isBride) renderBrideCategoryColumn(column.col, cat);
+      else renderGroomCategoryColumn(column.col, cat);
       columnsEl.appendChild(column.wrap);
     });
   }
+
+  genderTabs.forEach(b => b.addEventListener('click', () => {
+    state.gender = b.dataset.gender;
+    localStorage.setItem('timeline-gender', state.gender);
+    genderTabs.forEach(x => x.classList.toggle('active', x === b));
+    render();
+  }));
 
   categoryTabs.forEach(b => b.addEventListener('click', () => {
     state.category = b.dataset.category;
@@ -242,6 +295,7 @@
     render();
   }));
 
+  genderTabs.forEach(b => b.classList.toggle('active', b.dataset.gender === state.gender));
   categoryTabs.forEach(b => b.classList.toggle('active', b.dataset.category === state.category));
   render();
 })();
