@@ -4,7 +4,7 @@ const CALENDAR_GROOM = {
       {type:"item", cat:"예식 준비", text:"양가 상견례 날짜 잡기"},
       {type:"item", cat:"예식 준비", text:"부모님 지원 범위 확인하기"},
       {type:"item", cat:"신혼집", text:"내가 모아놓은 결혼 자금 확인하기"},
-      {type:"item", cat:"부모님", text:"결혼 준비 일정 가족과 공유하기"},
+      {type:"item", cat:"부모님", text:"결혼 준비 일정 가족과 공유하기", link:"m0-share-schedule"},
       {type:"item", cat:"예식 준비", text:"예물 진행 여부 부모님과 상의하기"},
       {type:"fields", cat:"예식 준비", labels:["상견례일정","장소"]}
     ]},
@@ -26,11 +26,11 @@ const CALENDAR_GROOM = {
     { dday: "D-9개월", alt: "5개월", blocks: [
       {type:"item", cat:"예식 준비", text:"결혼 전 신랑·신부 건강검진하기 (생활습관·건강 상태 미리 확인하기)"},
       {type:"item", cat:"스드메", text:"웨딩 촬영 날짜·시간 물어보기 (헤어·메이크업 후 스튜디오 이동 시간 확인)"},
-      {type:"item", cat:"스드메", text:"신랑 예복 준비 시작하기 (촬영용 대여·본식맞춤 여부 정하기)"},
+      {type:"item", cat:"스드메", text:"신랑 예복 준비 시작하기 (촬영용 대여·본식맞춤 여부 정하기)", link:"m3-groom-attire-start"},
       {type:"item", cat:"신혼집", text:"신혼집 후보 지역 정리하기 (출퇴근·생활권 함께 고려하기)"},
       {type:"item", cat:"신혼여행", text:"신혼여행 방향 정해보기 (자유여행·패키지 고민하기)"},
       {type:"item", cat:"신혼여행", text:"신혼여행 항공권·숙소 예약하기 (비자·여권 유효기간 확인)"},
-      {type:"item", cat:"예식 준비", text:"혼인신고 언제 할지 정하기 (세금·대출 영향 확인)"}
+      {type:"item", cat:"예식 준비", text:"혼인신고 언제 할지 정하기 (세금·대출 영향 확인)", link:"m3-marriage-registration"}
     ]},
     { dday: "D-8개월", alt: "4개월", blocks: [
       {type:"item", cat:"스드메", text:"피부관리·다이어트 시작하기 (수염·보톡스·마스크팩·선크림 등)"},

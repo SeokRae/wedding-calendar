@@ -173,9 +173,15 @@
         items.forEach(({ it, ii }) => {
           const id = `timeline-summary-m${mi}-i${ii}`;
           // items with known brideIndexes act as a parent over the matching
-          // 카테고리 컬럼 entries, so its check state is derived from them
+          // 카테고리 컬럼 entries, so its check state is derived from them.
+          // 그 카테고리 컬럼 항목이 link로 신랑 항목과 공유 id를 쓰는 경우,
+          // 실제 항목 객체를 찾아 같은 공유 id를 자식으로 넣어야 어긋나지 않는다
           const childIds = it.brideIndexes
-            ? it.brideIndexes.map(idx => `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, ''))
+            ? it.brideIndexes.map(idx => {
+                const brideItem = (CALENDAR_BRIDE.months[mi].sections[it.cat] || [])[idx];
+                const defaultId = `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, '');
+                return resolveCheckId(defaultId, brideItem);
+              })
             : null;
           ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)', childIds));
         });
@@ -197,7 +203,7 @@
         items.forEach((item, ii) => {
           // same id scheme as calendar.js's renderBrideMonth, so checking
           // an item here stays in sync with the calendar tool's bride view
-          const id = `bride-m${mi}-${cat}-${ii}`.replace(/\s/g, '');
+          const id = resolveCheckId(`bride-m${mi}-${cat}-${ii}`.replace(/\s/g, ''), item);
           const li = checkboxRow(id, itemText(item));
           if (typeof item === 'object' && item.sub) li.appendChild(subList(item.sub));
           ul.appendChild(li);
@@ -227,7 +233,7 @@
           if (block.type === 'item') {
             // 신랑용 id에는 bride와 달리 .replace(/\s/g, '')를 적용하지 않는다 —
             // calendar.js가 그렇게 만들지 않으므로 여기서도 그대로 맞춘다
-            const id = `groom-m${mi}-item${bi}`;
+            const id = resolveCheckId(`groom-m${mi}-item${bi}`, block);
             const li = checkboxRow(id, block.text);
             if (block.sub) li.appendChild(subList(block.sub));
             ul.appendChild(li);
