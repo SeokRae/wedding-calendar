@@ -6,6 +6,11 @@
   --sub-ink: #756B5E;
   --accent-bride: #D98A93;
   --accent-groom: #7FA6C9;
+  --cat-ceremony: #E8A57C;
+  --cat-sdm: #C7A93A;
+  --cat-home: #4FA089;
+  --cat-honeymoon: #6F9CEB;
+  --cat-parents: #B08BC9;
 }
 
 * { box-sizing: border-box; }
