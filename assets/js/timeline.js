@@ -152,21 +152,31 @@
     return { wrap, col, header };
   }
 
-  function renderSummaryColumn(col) {
+  function renderSummaryColumn(col, catFilter) {
     TIMELINE_SUMMARY.forEach((month, mi) => {
+      // 원본 위치(ii)를 먼저 붙인 뒤 걸러야 카테고리로 필터링해도 항목의
+      // localStorage id(timeline-summary-m{mi}-i{ii})가 흔들리지 않는다
+      const items = month.items
+        .map((it, ii) => ({ it, ii }))
+        .filter(({ it }) => !catFilter || it.cat === catFilter);
+
       const row = monthRow(month.dday, month.tag);
-      const ul = document.createElement('ul');
-      ul.className = 'tl-items';
-      month.items.forEach((it, ii) => {
-        const id = `timeline-summary-m${mi}-i${ii}`;
-        // items with known brideIndexes act as a parent over the matching
-        // 카테고리 컬럼 entries, so its check state is derived from them
-        const childIds = (it.cat === '스드메' || it.cat === '신혼집') && it.brideIndexes
-          ? it.brideIndexes.map(idx => `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, ''))
-          : null;
-        ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)', childIds));
-      });
-      row.appendChild(ul);
+      if (items.length) {
+        const ul = document.createElement('ul');
+        ul.className = 'tl-items';
+        items.forEach(({ it, ii }) => {
+          const id = `timeline-summary-m${mi}-i${ii}`;
+          // items with known brideIndexes act as a parent over the matching
+          // 카테고리 컬럼 entries, so its check state is derived from them
+          const childIds = (it.cat === '스드메' || it.cat === '신혼집') && it.brideIndexes
+            ? it.brideIndexes.map(idx => `bride-m${mi}-${it.cat}-${idx}`.replace(/\s/g, ''))
+            : null;
+          ul.appendChild(checkboxRow(id, it.text, CAT_VAR[it.cat] || 'var(--ink)', childIds));
+        });
+        row.appendChild(ul);
+      } else {
+        row.appendChild(emptyNote());
+      }
       col.appendChild(row);
     });
   }
@@ -195,15 +205,43 @@
   }
 
   const columnsEl = document.getElementById('tl-columns');
+  const categoryTabs = Array.from(document.querySelectorAll('#category-tabs button'));
 
-  const summary = columnShell('캘린더 전체요약', 'summary');
-  summary.wrap.insertBefore(legend(), summary.col);
-  renderSummaryColumn(summary.col);
-  columnsEl.appendChild(summary.wrap);
+  const state = {
+    category: localStorage.getItem('timeline-category') || 'all'
+  };
 
-  BRIDE_CATS.forEach(cat => {
-    const column = columnShell(`${cat} 전체`, CAT_KEY[cat]);
-    renderBrideCategoryColumn(column.col, cat);
-    columnsEl.appendChild(column.wrap);
-  });
+  function render() {
+    // 탭을 바꿀 때마다 컬럼을 통째로 다시 그리므로, 이전 렌더에서 등록된
+    // group을 비우지 않으면 화면에서 사라진 체크박스를 가리키는 좀비 group이
+    // 쌓여 부분체크 계산이 어긋난다
+    groups.length = 0;
+    columnsEl.innerHTML = '';
+
+    const catFilter = state.category === 'all' ? null : state.category;
+    columnsEl.classList.toggle('dense', !catFilter);
+    columnsEl.classList.toggle('two-col', !!catFilter);
+
+    const summary = columnShell('캘린더 전체요약', 'summary');
+    if (!catFilter) summary.wrap.insertBefore(legend(), summary.col);
+    renderSummaryColumn(summary.col, catFilter);
+    columnsEl.appendChild(summary.wrap);
+
+    const cats = catFilter ? [catFilter] : BRIDE_CATS;
+    cats.forEach(cat => {
+      const column = columnShell(`${cat} 전체`, CAT_KEY[cat]);
+      renderBrideCategoryColumn(column.col, cat);
+      columnsEl.appendChild(column.wrap);
+    });
+  }
+
+  categoryTabs.forEach(b => b.addEventListener('click', () => {
+    state.category = b.dataset.category;
+    localStorage.setItem('timeline-category', state.category);
+    categoryTabs.forEach(x => x.classList.toggle('active', x === b));
+    render();
+  }));
+
+  categoryTabs.forEach(b => b.classList.toggle('active', b.dataset.category === state.category));
+  render();
 })();

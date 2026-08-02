@@ -12,7 +12,34 @@
   align-items: start;
 }
 
+.tl-columns.dense {
+  gap: 18px;
+}
+
+.tl-columns.dense label.tl-check {
+  font-size: 12px;
+}
+
+.tl-columns.dense ul.sub {
+  display: none;
+}
+
+.tl-columns.two-col {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .tl-columns { grid-template-columns: repeat(3, 1fr); }
+}
+
 @media (max-width: 900px) {
+  .tl-columns { grid-template-columns: repeat(2, 1fr); }
+  .tl-columns.two-col { grid-template-columns: 1fr; max-width: none; }
+}
+
+@media (max-width: 620px) {
   .tl-columns { grid-template-columns: 1fr; }
 }
 
@@ -126,6 +153,9 @@ ul.sub {
 ul.sub li { font-size: 11px; color: var(--sub-ink); margin-bottom: 3px; }
 
 @media print {
-  .tl-columns { grid-template-columns: repeat(3, 1fr); }
+  .gender-tabs, .category-tabs { display: none; }
+  .tl-columns { display: block; }
+  .tl-row { break-inside: avoid; }
+  ul.sub { display: revert; }
   label.tl-check input[type="checkbox"] { accent-color: var(--ink); }
 }
