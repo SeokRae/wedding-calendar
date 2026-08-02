@@ -119,10 +119,16 @@
     return row;
   }
 
+  function summaryHasCat(cat) {
+    return TIMELINE_SUMMARY.some(month => month.items.some(it => it.cat === cat));
+  }
+
   function legend() {
     const wrap = document.createElement('div');
     wrap.className = 'tl-legend';
-    BRIDE_CATS.forEach(cat => {
+    // 전체요약에 실제로 등장하는 카테고리만 표시한다 — 항목이 하나도 없는
+    // 카테고리(예: 부모님)까지 넣으면 범례에 죽은 항목이 생긴다
+    BRIDE_CATS.filter(summaryHasCat).forEach(cat => {
       const item = document.createElement('span');
       item.className = 'tl-legend-item';
 
@@ -267,7 +273,14 @@
 
     if (isBride) {
       const summary = columnShell('캘린더 전체요약', 'summary');
-      if (!catFilter) summary.wrap.insertBefore(legend(), summary.col);
+      if (!catFilter) {
+        summary.wrap.insertBefore(legend(), summary.col);
+      } else if (!summaryHasCat(catFilter)) {
+        const note = document.createElement('div');
+        note.className = 'tl-empty';
+        note.textContent = '전체요약에는 아직 이 카테고리 항목이 없습니다. 오른쪽에서 전체 항목을 확인하세요.';
+        summary.wrap.insertBefore(note, summary.col);
+      }
       renderSummaryColumn(summary.col, catFilter);
       columnsEl.appendChild(summary.wrap);
     }
