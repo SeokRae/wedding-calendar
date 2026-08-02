@@ -92,7 +92,7 @@ footer.site-footer {
 .gender-tabs button {
   font-family: inherit;
   font-size: 14px;
-  padding: 13px 22px;
+  padding: 8px 22px;
   border-radius: 20px;
   border: 1px solid var(--ink);
   background: transparent;
@@ -114,7 +114,7 @@ footer.site-footer {
 .category-tabs button {
   font-family: inherit;
   font-size: 12.5px;
-  padding: 11px 14px;
+  padding: 6px 14px;
   border-radius: 16px;
   border: 1px solid var(--border);
   background: transparent;
@@ -133,6 +133,9 @@ footer.site-footer {
 @media (max-width: 560px) {
   body { padding: 20px 14px 40px; }
   .page { padding: 20px 16px 32px; }
+  /* 터치 화면에서 탭 버튼을 44px에 가깝게 넓힌다 */
+  .gender-tabs button { padding: 13px 22px; }
+  .category-tabs button { padding: 11px 14px; }
 }
 
 @media print {

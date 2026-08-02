@@ -33,23 +33,22 @@
 }
 
 ul.items { list-style: none; margin: 0; padding: 0; }
-ul.items > li { margin-bottom: 2px; }
+ul.items > li { margin-bottom: 6px; }
 
 label.item {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 7px;
   font-size: 13px;
   line-height: 1.4;
-  padding: 13px 0;
   cursor: pointer;
 }
 
 label.item input[type="checkbox"] {
   margin-top: 2px;
   flex: none;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   accent-color: var(--ink);
 }
 
@@ -96,10 +95,19 @@ ul.sub li { font-size: 11.5px; color: var(--sub-ink); margin-bottom: 3px; }
   border: none;
   border-bottom: 1px solid var(--border);
   background: transparent;
-  font-size: 16px;
-  padding: 6px 0;
+  font-size: 13px;
+  padding: 2px 0;
   font-family: inherit;
   color: var(--ink);
+}
+
+@media (max-width: 560px) {
+  /* 터치 화면에서 체크박스 행을 44px 이상으로 넓히고, 입력 포커스 시
+     iOS 자동 확대를 막기 위해 입력 font-size를 16px 이상으로 올린다 */
+  ul.items > li { margin-bottom: 2px; }
+  label.item { gap: 8px; padding: 13px 0; }
+  label.item input[type="checkbox"] { width: 18px; height: 18px; }
+  .fields-box input[type="text"] { font-size: 16px; padding: 6px 0; }
 }
 
 @media print {

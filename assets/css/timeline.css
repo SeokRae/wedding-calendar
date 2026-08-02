@@ -118,23 +118,22 @@
 }
 
 ul.tl-items { list-style: none; margin: 0; padding: 0; }
-ul.tl-items li { margin-bottom: 2px; }
+ul.tl-items li { margin-bottom: 6px; }
 
 label.tl-check {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 7px;
   font-size: 12.5px;
   line-height: 1.5;
-  padding: 12px 0;
   cursor: pointer;
 }
 
 label.tl-check input[type="checkbox"] {
   margin-top: 3px;
   flex: none;
-  width: 17px;
-  height: 17px;
+  width: 13px;
+  height: 13px;
   accent-color: var(--ink);
 }
 
@@ -161,6 +160,13 @@ ul.sub {
 }
 
 ul.sub li { font-size: 11px; color: var(--sub-ink); margin-bottom: 3px; }
+
+@media (max-width: 560px) {
+  /* 터치 화면에서 체크박스 행을 44px 이상으로 넓힌다 */
+  ul.tl-items li { margin-bottom: 2px; }
+  label.tl-check { gap: 8px; padding: 12px 0; }
+  label.tl-check input[type="checkbox"] { width: 17px; height: 17px; }
+}
 
 @media print {
   .gender-tabs, .category-tabs { display: none; }
