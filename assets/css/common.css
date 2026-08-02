@@ -44,7 +44,27 @@ a { color: inherit; }
 
 .top-row .left b { display: block; font-size: 14px; }
 .top-row .right { text-align: right; }
-.top-row .back-link { display: inline-block; margin-bottom: 6px; font-size: 12px; }
+
+.top-row .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--sub-ink);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.top-row .back-link:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
 
 .title-block {
   text-align: center;
@@ -102,6 +122,7 @@ footer.site-footer {
 
 .gender-tabs button.active[data-gender="bride"] { background: var(--accent-bride); border-color: var(--accent-bride); color: #fff; }
 .gender-tabs button.active[data-gender="groom"] { background: var(--accent-groom); border-color: var(--accent-groom); color: #fff; }
+.gender-tabs button:hover:not(.active) { background: rgba(46, 42, 37, 0.06); }
 
 .category-tabs {
   display: flex;
@@ -122,6 +143,7 @@ footer.site-footer {
   cursor: pointer;
 }
 
+.category-tabs button:hover:not(.active) { border-color: var(--ink); color: var(--ink); }
 .category-tabs button.active { color: #fff; border-color: transparent; }
 .category-tabs button.active[data-category="all"] { background: var(--ink); }
 .category-tabs button.active[data-category="예식 준비"] { background: var(--cat-ceremony); }
@@ -130,15 +152,22 @@ footer.site-footer {
 .category-tabs button.active[data-category="신혼여행"] { background: var(--cat-honeymoon); }
 .category-tabs button.active[data-category="부모님"] { background: var(--cat-parents); }
 
+.back-link:focus-visible,
+.gender-tabs button:focus-visible,
+.category-tabs button:focus-visible,
+.tool-card:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
 @media (max-width: 560px) {
   body { padding: 20px 14px 40px; }
   .page { padding: 20px 16px 32px; }
   /* 터치 화면에서 탭 버튼을 44px에 가깝게 넓힌다 */
   .gender-tabs button { padding: 13px 22px; }
   .category-tabs button { padding: 11px 14px; }
-  /* 홈으로 링크의 탭 영역을 넓히되, 음수 margin으로 상쇄해 텍스트
-     위치와 주변 여백은 그대로 유지한다 */
-  .top-row .back-link { font-size: 14px; padding: 8px 4px; margin: -8px 0 -2px -4px; }
+  /* 홈으로 버튼도 같은 기준(44px 안팎)으로 탭 영역을 넓힌다 */
+  .top-row .back-link { padding: 13px 18px; }
 }
 
 @media print {
