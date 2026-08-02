@@ -91,7 +91,14 @@
     return card;
   }
 
-  function renderGroomMonth(month, mi) {
+  function renderGroomMonth(month, mi, categoryFilter) {
+    // keep each block's original index (bi) for its localStorage id, so
+    // checked state stays put no matter which category filter is active
+    const blocks = month.blocks
+      .map((block, bi) => ({ block, bi }))
+      .filter(({ block }) => categoryFilter === 'all' || block.cat === categoryFilter);
+    if (!blocks.length) return null;
+
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `<span class="dday">${month.dday}</span><span class="alt">or ${month.alt}</span>`;
@@ -102,7 +109,7 @@
     ul.className = 'items';
     ul.style.marginTop = '14px';
 
-    month.blocks.forEach((block, bi) => {
+    blocks.forEach(({ block, bi }) => {
       const li = document.createElement('li');
 
       if (block.type === 'item') {
@@ -165,17 +172,11 @@
 
   function render() {
     grid.innerHTML = '';
-
-    if (state.gender === 'bride') {
-      categoryTabsEl.style.display = 'flex';
-      DATA.bride.months.forEach((month, mi) => {
-        const card = renderBrideMonth(month, mi, state.category);
-        if (card) grid.appendChild(card);
-      });
-    } else {
-      categoryTabsEl.style.display = 'none';
-      DATA.groom.months.forEach((month, mi) => grid.appendChild(renderGroomMonth(month, mi)));
-    }
+    const renderMonth = state.gender === 'bride' ? renderBrideMonth : renderGroomMonth;
+    DATA[state.gender].months.forEach((month, mi) => {
+      const card = renderMonth(month, mi, state.category);
+      if (card) grid.appendChild(card);
+    });
   }
 
   genderTabs.forEach(b => b.addEventListener('click', () => {
