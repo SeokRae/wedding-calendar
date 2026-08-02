@@ -30,12 +30,6 @@
   margin: 0 auto;
 }
 
-.tl-columns.one-col {
-  grid-template-columns: 1fr;
-  max-width: 460px;
-  margin: 0 auto;
-}
-
 @media (max-width: 900px) {
   .tl-columns { grid-template-columns: repeat(2, 1fr); }
   .tl-columns.two-col { grid-template-columns: 1fr; max-width: none; }
@@ -141,10 +135,13 @@ label.tl-check input[type="checkbox"] {
   accent-color: var(--ink);
 }
 
-label.tl-check input:checked + .tl-dot + span,
-label.tl-check input:checked + span {
+label.tl-check input:checked ~ .tl-check-content .tl-check-text {
   text-decoration: line-through;
   color: var(--sub-ink);
+}
+
+label.tl-check input:checked ~ .tl-check-content .tl-source {
+  opacity: 0.55;
 }
 
 .tl-dot {
@@ -154,6 +151,30 @@ label.tl-check input:checked + span {
   border-radius: 50%;
   margin-top: 6px;
 }
+
+.tl-check-content {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 6px;
+  min-width: 0;
+}
+
+.tl-source {
+  display: inline-block;
+  flex: none;
+  font-size: 9.5px;
+  font-weight: bold;
+  line-height: 1.6;
+  padding: 0 6px;
+  border-radius: 8px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.tl-source-bride { background: var(--accent-bride); }
+.tl-source-groom { background: var(--accent-groom); }
+.tl-source-both { background: linear-gradient(90deg, var(--accent-bride), var(--accent-groom)); }
 
 ul.sub {
   list-style: none;
@@ -173,7 +194,7 @@ ul.sub li { font-size: 11px; color: var(--sub-ink); margin-bottom: 3px; }
 }
 
 @media print {
-  .gender-tabs, .category-tabs { display: none; }
+  .category-tabs { display: none; }
   .tl-columns { display: block; }
   .tl-row { break-inside: avoid; }
   ul.sub { display: revert; }
