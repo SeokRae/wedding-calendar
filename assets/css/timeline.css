@@ -162,9 +162,9 @@ ul.sub {
 ul.sub li { font-size: 11px; color: var(--sub-ink); margin-bottom: 3px; }
 
 @media (max-width: 560px) {
-  /* 터치 화면에서 체크박스 행을 44px 이상으로 넓힌다 */
+  /* 터치 화면에서 체크박스 행을 넓히되(약 36px) 지나치게 성기지 않도록 한다 */
   ul.tl-items li { margin-bottom: 2px; }
-  label.tl-check { gap: 8px; padding: 12px 0; }
+  label.tl-check { gap: 8px; padding: 7px 0; }
   label.tl-check input[type="checkbox"] { width: 17px; height: 17px; }
 }
 
