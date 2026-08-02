@@ -21,6 +21,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: 'Apple SD Gothic Neo', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-wrap: anywhere;
 }
 
 a { color: inherit; }
@@ -63,10 +64,15 @@ a { color: inherit; }
 
 h1.page-title {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 56px;
-  letter-spacing: 14px;
+  font-size: clamp(28px, 9vw, 56px);
+  letter-spacing: clamp(3px, 1.6vw, 14px);
   margin: 0 0 8px;
-  padding-left: 14px; /* optical centering for letter-spacing */
+  padding-left: 10px; /* optical centering for letter-spacing */
+}
+
+h1.page-title.wide {
+  font-size: clamp(24px, 7vw, 40px);
+  letter-spacing: clamp(3px, 1.2vw, 8px);
 }
 
 footer.site-footer {
@@ -125,7 +131,8 @@ footer.site-footer {
 .category-tabs button.active[data-category="부모님"] { background: var(--cat-parents); }
 
 @media (max-width: 560px) {
-  h1.page-title { font-size: 36px; letter-spacing: 8px; }
+  body { padding: 20px 14px 40px; }
+  .page { padding: 20px 16px 32px; }
 }
 
 @media print {

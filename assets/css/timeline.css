@@ -36,10 +36,6 @@
   margin: 0 auto;
 }
 
-@media (max-width: 1200px) {
-  .tl-columns { grid-template-columns: repeat(3, 1fr); }
-}
-
 @media (max-width: 900px) {
   .tl-columns { grid-template-columns: repeat(2, 1fr); }
   .tl-columns.two-col { grid-template-columns: 1fr; max-width: none; }

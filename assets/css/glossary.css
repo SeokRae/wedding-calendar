@@ -7,6 +7,11 @@
   .glossary-columns { column-count: 1; }
 }
 
+@media (max-width: 560px) {
+  .glossary-row { flex-direction: column; gap: 4px; }
+  .glossary-term { width: auto; }
+}
+
 .glossary-section { margin-bottom: 26px; break-inside: avoid; }
 
 .glossary-section h3 {
