@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>결혼 준비 캘린더</title>
+<link rel="stylesheet" href="../assets/css/common.css">
+<link rel="stylesheet" href="../assets/css/calendar.css">
+</head>
+<body>
+<div class="page">
+
+  <div class="top-row">
+    <div class="left">
+      <a class="back-link" href="../index.html">← 홈으로</a>
+      <b>결혼식, 작은 순간들이 모여</b>
+      우리라는 이야기가 시작됩니다
+    </div>
+    <div class="right">예비 신랑·신부 결혼 캘린더</div>
+  </div>
+
+  <div class="title-block">
+    <span class="pill">WEDDING PLAN</span>
+    <h1 class="page-title">CALENDAR</h1>
+    <div class="gender-tabs">
+      <button data-gender="bride">신부용</button>
+      <button data-gender="groom">신랑용</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer class="site-footer">체크한 항목과 입력한 일정·장소는 이 브라우저에 자동 저장됩니다.</footer>
+</div>
+
+<script src="../data/calendar-bride.js"></script>
+<script src="../data/calendar-groom.js"></script>
+<script src="../assets/js/calendar.js"></script>
+</body>
+</html>
