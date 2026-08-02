@@ -12,23 +12,27 @@ wedding-calendar/
 ├── pages/
 │   ├── calendar.html        캘린더 도구 (신부용 ↔ 신랑용 탭)
 │   ├── timeline.html        타임라인 도구 (월별 요약 + 스드메·신혼집 전체 보기)
-│   └── budget.html          예산 가이드 도구 (항목별 비용 범위 + 총액대)
+│   ├── budget.html          예산 가이드 도구 (항목별 비용 범위 + 총액대)
+│   └── glossary.html        용어 가이드 도구 (결혼 준비 용어 사전)
 ├── data/
 │   ├── calendar-bride.js    신부용 캘린더 콘텐츠 (섹션별 체크리스트)
 │   ├── calendar-groom.js    신랑용 캘린더 콘텐츠 (항목 나열형 + tip/입력 필드)
 │   ├── timeline-summary.js  타임라인 "캘린더 전체요약" 칼럼 콘텐츠
-│   └── budget.js            예산 가이드 콘텐츠 (요약표 + 항목별 상세)
+│   ├── budget.js            예산 가이드 콘텐츠 (요약표 + 항목별 상세)
+│   └── glossary.js          용어 가이드 콘텐츠 (섹션별 용어·정의)
 ├── assets/
 │   ├── css/
 │   │   ├── common.css       색상 변수, 리셋, 헤더/타이틀 공통 스타일
 │   │   ├── home.css         홈 페이지(도구 카드 목록) 전용 스타일
 │   │   ├── calendar.css     캘린더 도구 전용 스타일 (탭, 카드, tip 박스 등)
 │   │   ├── timeline.css     타임라인 도구 전용 스타일 (3칼럼, 카테고리 색점)
-│   │   └── budget.css       예산 가이드 전용 스타일 (요약표, 항목 카드)
+│   │   ├── budget.css       예산 가이드 전용 스타일 (요약표, 항목 카드)
+│   │   └── glossary.css     용어 가이드 전용 스타일 (2단 컬럼 flow)
 │   └── js/
 │       ├── calendar.js      캘린더 렌더링 로직 (체크박스/입력값 localStorage 저장)
 │       ├── timeline.js      타임라인 렌더링 로직 (calendar-bride.js 데이터 재사용)
-│       └── budget.js        예산 가이드 렌더링 로직
+│       ├── budget.js        예산 가이드 렌더링 로직
+│       └── glossary.js      용어 가이드 렌더링 로직
 └── README.md
 ```
 
@@ -46,4 +50,5 @@ wedding-calendar/
 
 - `calendar-bride.js`의 D-6개월 항목은 원본 이미지에서 중앙 뱃지("신부용")에 가려져 일부만 옮겨졌다. 원본 확인 후 보완 필요. (`calendar-groom.js`의 D-6개월은 확인 완료)
 - `budget.js`의 "본식 스냅" 섹션 노트("원판이란?")는 원본 이미지에서 문장이 잘려 일부만 옮겨졌다.
+- `glossary.js`의 촬영·스냅 섹션(②③)은 원본에서 용어명 자체가 뱃지에 가려져 정의만 옮기고 용어명은 비워뒀다. `예식` 섹션의 "보증인원"/"미니멈개런티"는 정의만 보고 추정한 용어명이라 확인이 필요하다.
 - 체크 상태·입력 필드 값은 `localStorage`에 저장되므로 브라우저/기기 간 동기화되지 않는다.

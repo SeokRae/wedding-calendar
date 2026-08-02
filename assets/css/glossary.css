@@ -1,0 +1,62 @@
+.glossary-columns {
+  column-count: 2;
+  column-gap: 36px;
+}
+
+@media (max-width: 800px) {
+  .glossary-columns { column-count: 1; }
+}
+
+.glossary-section { margin-bottom: 26px; break-inside: avoid; }
+
+.glossary-section h3 {
+  font-size: 14px;
+  margin: 0 0 10px;
+  display: inline-block;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 4px 14px;
+  border-radius: 12px;
+}
+
+.glossary-section.unconfirmed h3 { background: var(--accent-bride); }
+
+.glossary-section .section-hint {
+  font-size: 11px;
+  color: var(--accent-bride);
+  margin: -4px 0 8px;
+}
+
+.glossary-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 12.5px;
+}
+
+.glossary-row:last-child { border-bottom: none; }
+
+.glossary-term {
+  flex: none;
+  width: 112px;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+.glossary-term.uncertain {
+  background: rgba(217, 138, 147, 0.15);
+}
+
+.glossary-term.unknown {
+  color: var(--sub-ink);
+  font-weight: normal;
+  font-style: italic;
+  background: transparent;
+  padding: 2px 0;
+}
+
+.glossary-def { flex: 1; padding-top: 2px; }
