@@ -48,6 +48,9 @@
 
 @media (max-width: 560px) {
   .budget-tiers { grid-template-columns: 1fr; }
+  .budget-summary-table { grid-template-columns: repeat(2, 1fr); }
+  /* 항목이 홀수 개라 마지막 줄에 혼자 남는 칸은 2칸을 모두 채운다 */
+  .budget-summary-table .cell:last-child:nth-child(odd) { grid-column: span 2; }
 }
 
 .budget-card {
