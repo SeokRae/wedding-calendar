@@ -26,9 +26,12 @@
   color: #fff;
 }
 
-.tl-col-header.summary { background: var(--cat-ceremony); }
+.tl-col-header.summary { background: var(--ink); }
+.tl-col-header.ceremony { background: var(--cat-ceremony); }
 .tl-col-header.sdm { background: var(--cat-sdm); }
 .tl-col-header.home { background: var(--cat-home); }
+.tl-col-header.honeymoon { background: var(--cat-honeymoon); }
+.tl-col-header.parents { background: var(--cat-parents); }
 
 .tl-legend {
   display: flex;
@@ -58,6 +61,11 @@
 }
 
 .tl-row { margin-bottom: 22px; }
+
+.tl-empty {
+  font-size: 11.5px;
+  color: var(--sub-ink);
+}
 
 .tl-dday {
   font-family: Georgia, 'Times New Roman', serif;

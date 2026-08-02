@@ -7,6 +7,13 @@
     "부모님": "var(--cat-parents)"
   };
   const BRIDE_CATS = ["예식 준비", "스드메", "신혼집", "신혼여행", "부모님"];
+  const CAT_KEY = {
+    "예식 준비": "ceremony",
+    "스드메": "sdm",
+    "신혼집": "home",
+    "신혼여행": "honeymoon",
+    "부모님": "parents"
+  };
 
   function itemText(item) {
     return typeof item === 'object' ? item.text : item;
@@ -79,6 +86,13 @@
 
     li.appendChild(label);
     return li;
+  }
+
+  function emptyNote() {
+    const div = document.createElement('div');
+    div.className = 'tl-empty';
+    div.textContent = '— 해당 없음';
+    return div;
   }
 
   function subList(subs) {
@@ -173,6 +187,8 @@
           ul.appendChild(li);
         });
         row.appendChild(ul);
+      } else {
+        row.appendChild(emptyNote());
       }
       col.appendChild(row);
     });
@@ -185,11 +201,9 @@
   renderSummaryColumn(summary.col);
   columnsEl.appendChild(summary.wrap);
 
-  const sdm = columnShell('스드메 전체', 'sdm');
-  renderBrideCategoryColumn(sdm.col, '스드메');
-  columnsEl.appendChild(sdm.wrap);
-
-  const home = columnShell('신혼집 전체', 'home');
-  renderBrideCategoryColumn(home.col, '신혼집');
-  columnsEl.appendChild(home.wrap);
+  BRIDE_CATS.forEach(cat => {
+    const column = columnShell(`${cat} 전체`, CAT_KEY[cat]);
+    renderBrideCategoryColumn(column.col, cat);
+    columnsEl.appendChild(column.wrap);
+  });
 })();
