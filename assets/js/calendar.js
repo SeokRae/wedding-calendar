@@ -183,8 +183,9 @@
   }
 
   // 데이터를 다시 훑지 않고, 지금 화면에 렌더링된 카드(현재 필터·체크
-  // 상태 그대로)를 그대로 읽어 이미지 렌더러용 레코드로 옮긴다 — 렌더링
-  // 로직과 별도로 유지보수할 필요가 없도록 항상 화면과 일치시키기 위함.
+  // 상태 그대로)를 그대로 읽어 이미지 렌더러용 카드 데이터로 옮긴다 —
+  // 렌더링 로직과 별도로 유지보수할 필요가 없도록 항상 화면과 일치시키기
+  // 위함.
   function accentColor() {
     return ShareImage.cssVar(state.gender === 'bride' ? '--accent-bride' : '--accent-groom');
   }
@@ -213,19 +214,16 @@
         fieldsBox.querySelectorAll('.field').forEach(field => {
           const lab = field.querySelector('label').textContent.trim();
           const val = field.querySelector('input').value.trim();
-          records.push({ type: 'item', text: `${lab}: ${val || '(미입력)'}`, checked: false });
+          records.push({ type: 'field', text: `${lab}: ${val || '(미입력)'}` });
         });
       }
     });
   }
 
-  function buildShareRecords() {
-    const genderLabel = state.gender === 'bride' ? '신부용' : '신랑용';
-    const catLabel = state.category === 'all' ? '전체' : state.category;
+  function buildShareCards() {
     const accent = accentColor();
-    const records = [{ type: 'title', text: `결혼 준비 캘린더 (${genderLabel} · ${catLabel})` }];
-
-    Array.from(grid.children).forEach(card => {
+    return Array.from(grid.children).map(card => {
+      const records = [];
       const dday = card.querySelector('.dday').textContent.trim();
       const alt = card.querySelector('.alt').textContent.trim();
       records.push({ type: 'dday', text: `${dday}${alt ? ' ' + alt : ''}` });
@@ -242,11 +240,8 @@
       } else {
         appendItemRecords(card.querySelector(':scope > ul.items'), records);
       }
-      records.push({ type: 'spacer', size: 18 });
+      return { records };
     });
-
-    records.push({ type: 'footer', text: `by 결혼 준비 캘린더 · ${location.href}` });
-    return records;
   }
 
   function setActive(tabs, isActive) {
@@ -278,7 +273,11 @@
   const copyBtn = document.getElementById('copy-btn');
   const copyFeedback = document.getElementById('copy-feedback');
   if (copyBtn) {
-    copyBtn.addEventListener('click', () => ShareImage.copyImageWithFeedback(buildShareRecords(), copyFeedback));
+    copyBtn.addEventListener('click', () => {
+      const genderLabel = state.gender === 'bride' ? '신부용' : '신랑용';
+      const catLabel = state.category === 'all' ? '전체' : state.category;
+      ShareImage.copyCalendarImage(`결혼 준비 캘린더 (${genderLabel} · ${catLabel})`, buildShareCards(), copyFeedback);
+    });
   }
 
   if (!WeddingStore.available) {

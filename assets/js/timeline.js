@@ -293,9 +293,11 @@
   }
 
   // 데이터를 다시 훑지 않고, 지금 화면에 렌더링된 칼럼(현재 필터·체크
-  // 상태 그대로)을 그대로 읽어 이미지 렌더러용 레코드로 옮긴다 — 렌더링
-  // 로직과 별도로 유지보수할 필요가 없도록 항상 화면과 일치시키기 위함.
-  function appendTlItemRecords(ul, records) {
+  // 상태 그대로)을 그대로 읽어 이미지 렌더러용 칼럼 데이터로 옮긴다 —
+  // 렌더링 로직과 별도로 유지보수할 필요가 없도록 항상 화면과 일치시키기
+  // 위함. 배지·점 색상은 이미 렌더링된 요소의 계산된 스타일을 그대로
+  // 읽어서 쓰므로 색상표를 따로 들고 있지 않아도 된다.
+  function appendTlItemRecords(ul, records, withDot) {
     if (!ul) return;
     Array.from(ul.children).forEach(li => {
       if (li.classList.contains('tl-tip-label')) {
@@ -306,40 +308,46 @@
       if (!label) return;
       const cb = label.querySelector('input[type="checkbox"]');
       const text = label.querySelector('.tl-check-text').textContent.trim();
-      const source = label.querySelector('.tl-source');
-      const fullText = text + (source ? ` (${source.textContent.trim()})` : '');
-      records.push({ type: 'item', text: fullText, checked: cb.checked });
+      const sourceEl = label.querySelector('.tl-source');
+      let badge = null;
+      if (sourceEl) {
+        const srcText = sourceEl.textContent.trim();
+        if (sourceEl.classList.contains('tl-source-both')) {
+          badge = { text: srcText, gradient: [ShareImage.cssVar('--accent-bride'), ShareImage.cssVar('--accent-groom')] };
+        } else {
+          badge = { text: srcText, bg: getComputedStyle(sourceEl).backgroundColor };
+        }
+      }
+      const dotEl = withDot ? label.querySelector('.tl-dot') : null;
+      const dot = dotEl ? getComputedStyle(dotEl).backgroundColor : null;
+      records.push({ type: 'item', text, checked: cb.checked, badge, dot });
       const sub = li.querySelector(':scope > ul.sub');
       if (sub) Array.from(sub.children).forEach(s => records.push({ type: 'sub', text: s.textContent.trim().replace(/^–\s*/, '') }));
     });
   }
 
-  function appendTlColumnRecords(wrap, headingText, color, records) {
-    records.push({ type: 'section', text: headingText, color });
+  function buildColumn(wrap, headerText, headerColor, withDot) {
+    const records = [];
     Array.from(wrap.querySelector('.tl-column').children).forEach(row => {
       const itemsUl = row.querySelector('ul.tl-items');
       if (!itemsUl) return; // '해당 없음' 등 빈 월은 생략
       records.push({ type: 'dday', text: row.querySelector('.tl-dday').textContent.trim() });
-      appendTlItemRecords(itemsUl, records);
+      appendTlItemRecords(itemsUl, records, withDot);
     });
-    records.push({ type: 'spacer', size: 18 });
+    return { header: headerText, headerColor, indent: withDot ? 27 : 18, records };
   }
 
-  function buildShareRecords() {
+  function buildShareColumns() {
     const catFilter = state.category === 'all' ? null : state.category;
-    const catLabel = state.category === 'all' ? '전체' : state.category;
-    const records = [{ type: 'title', text: `웨딩 타임라인 (${catLabel})` }];
-
     const wraps = Array.from(columnsEl.children);
-    appendTlColumnRecords(wraps[0], '캘린더 전체요약', ShareImage.cssVar('--ink'), records);
+    const columns = [buildColumn(wraps[0], '캘린더 전체요약', ShareImage.cssVar('--ink'), true)];
 
     const cats = catFilter ? [catFilter] : CATS;
     cats.forEach((cat, i) => {
-      appendTlColumnRecords(wraps[i + 1], `${cat} 전체`, ShareImage.cssVar(`--cat-${CAT_KEY[cat]}`), records);
+      columns.push(buildColumn(wraps[i + 1], `${cat} 전체`, ShareImage.cssVar(`--cat-${CAT_KEY[cat]}`), false));
     });
 
-    records.push({ type: 'footer', text: `by 웨딩 타임라인 · ${location.href}` });
-    return records;
+    return columns;
   }
 
   function setActive(tabs, isActive) {
@@ -363,7 +371,10 @@
   const copyBtn = document.getElementById('copy-btn');
   const copyFeedback = document.getElementById('copy-feedback');
   if (copyBtn) {
-    copyBtn.addEventListener('click', () => ShareImage.copyImageWithFeedback(buildShareRecords(), copyFeedback));
+    copyBtn.addEventListener('click', () => {
+      const catLabel = state.category === 'all' ? '전체' : state.category;
+      ShareImage.copyTimelineImage(`웨딩 타임라인 (${catLabel})`, buildShareColumns(), copyFeedback);
+    });
   }
 
   if (!WeddingStore.available) {
